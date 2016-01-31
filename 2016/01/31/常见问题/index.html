@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Android常见问题 | FangYuan&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Activity由于某原因被系统回收了，如何在被系统回收之前保存当前状态？在onSaveInstanceState()中保存其状态。activity被置于后台时，在执行onStop之前，通过onSaveInstacneState 保存当前activity状态。如果被系统杀死，再次被调起时，，在onResume之前，onStart之后，通过 onRestoreInstanceState（）来恢复其状">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android常见问题">
+<meta property="og:url" content="http://www.baoxiang.org.cn/2016/01/31/常见问题/index.html">
+<meta property="og:site_name" content="FangYuan's Blog">
+<meta property="og:description" content="Activity由于某原因被系统回收了，如何在被系统回收之前保存当前状态？在onSaveInstanceState()中保存其状态。activity被置于后台时，在执行onStop之前，通过onSaveInstacneState 保存当前activity状态。如果被系统杀死，再次被调起时，，在onResume之前，onStart之后，通过 onRestoreInstanceState（）来恢复其状">
+<meta property="og:image" content="https://github.com/paceboy/Android-InterView/blob/master/handler-howtowork.png">
+<meta property="og:image" content="https://github.com/paceboy/Android-InterView/raw/master/tcpconnect.png">
+<meta property="og:image" content="https://github.com/paceboy/Android-InterView/raw/master/tcpdisconnect.png">
+<meta property="og:image" content="https://github.com/paceboy/Android-InterView/blob/master/tcp%E6%85%A2%E5%BC%80%E5%A7%8B.png">
+<meta property="og:image" content="https://github.com/paceboy/Android-InterView/blob/master/tcp%E5%BF%AB%E9%87%8D%E4%BC%A0.png">
+<meta property="og:updated_time" content="2016-01-31T03:30:02.931Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android常见问题">
+<meta name="twitter:description" content="Activity由于某原因被系统回收了，如何在被系统回收之前保存当前状态？在onSaveInstanceState()中保存其状态。activity被置于后台时，在执行onStop之前，通过onSaveInstacneState 保存当前activity状态。如果被系统杀死，再次被调起时，，在onResume之前，onStart之后，通过 onRestoreInstanceState（）来恢复其状">
+  
+    <link rel="alternative" href="/atom.xml" title="FangYuan&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/1.jpg">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+  
+<script type="text/javascript">
+#�����İٶ�ͳ�ƴ���
+</script>
+
+  
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/a.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Fang Yuan</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Android Developer</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>標籤</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>關於</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/KnightUK" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/2618252081/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" title="weibo">weibo</a>
+					        
+								<a class="google" target="_blank" href="https://plus.google.com/u/0/" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android代码/" style="font-size: 20px;">Android代码</a> <a href="/tags/Android文章/" style="font-size: 20px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.liaohuqiu.net/">秋壕</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://androidperformance.com/">高爷</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/singwhatiwanna">任主席</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.daimajia.com/">代码家</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/innost">邓老师</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://vmatianyu.cn/">Liter</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.trinea.cn/">Trinea</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/bboyfeiyu">Mr.Simple</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.dreamtobe.cn/">Jacksgong</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.race604.com/">Android笔记</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">kymjs张涛</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenqichao.me/">启超的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.fangjie.info/">方杰的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.isming.me/">码农明明桑</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://droidyue.com/">技术小黑屋</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/eclipsexys">Tomcat的猫</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/guolin_blog">郭霖的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://drakeet.me/">Drakeet的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://zmywly8866.github.io/">张明远的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.liaoxuefeng.com/">廖雪峰的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://itangqi.me/">QI TANGS BLOG</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://c4fun.cn/">Code 4 Fun</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://ontheroad.sinaapp.com/">Tian Jun-Find My Way</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">me.findViewById(&quot;R.id.world&quot;)</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Fang Yuan</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/a.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Fang Yuan</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">Android Developer</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/KnightUK" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/2618252081/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" title="weibo">weibo</a>
+			        
+						<a class="google" target="_blank" href="https://plus.google.com/u/0/" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-常见问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/31/常见问题/" class="article-date">
+  	<time datetime="2016-01-31T03:13:06.000Z" itemprop="datePublished">2016-01-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android常见问题
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android文章/">Android文章</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Activity_u7531_u4E8E_u67D0_u539F_u56E0_u88AB_u7CFB_u7EDF_u56DE_u6536_u4E86_uFF0C_u5982_u4F55_u5728_u88AB_u7CFB_u7EDF_u56DE_u6536_u4E4B_u524D_u4FDD_u5B58_u5F53_u524D_u72B6_u6001_uFF1F"><a href="#Activity_u7531_u4E8E_u67D0_u539F_u56E0_u88AB_u7CFB_u7EDF_u56DE_u6536_u4E86_uFF0C_u5982_u4F55_u5728_u88AB_u7CFB_u7EDF_u56DE_u6536_u4E4B_u524D_u4FDD_u5B58_u5F53_u524D_u72B6_u6001_uFF1F" class="headerlink" title="Activity由于某原因被系统回收了，如何在被系统回收之前保存当前状态？"></a>Activity由于某原因被系统回收了，如何在被系统回收之前保存当前状态？</h2><p>在onSaveInstanceState()中保存其状态。activity被置于后台时，在执行onStop之前，通过onSaveInstacneState 保存当前activity状态。如果被系统杀死，再次被调起时，，在onResume之前，onStart之后，通过 onRestoreInstanceState（）来恢复其状态。如果没有被系统杀死，则不执行onRestoreInstanceState。 如果用户点击back键，则onSaveInstanceState()不会被调用。<br><strong> onSaveInstanceState()在以下几种情况会被调用：</strong></p>
+<ul>
+<li>1，按home键时；</li>
+<li>2，横竖屏切换时；</li>
+<li>3，按电源键时；</li>
+<li>4，从当前activity进入另一个activity时。</li>
+</ul>
+<p>系统默认只会保存ui状态–view hierarchy，比如editext里面的text，或者listview的scroll位置， 不会保存别的信息，如果需要保存则复写此方法。</p>
+<h2 id="u5728_u5355_u7EBF_u7A0B_u6A21_u578B_u4E2DMessage_u3001Handler_u3001Message_Queue_u3001Looper_u4E4B_u95F4_u7684_u5173_u7CFB"><a href="#u5728_u5355_u7EBF_u7A0B_u6A21_u578B_u4E2DMessage_u3001Handler_u3001Message_Queue_u3001Looper_u4E4B_u95F4_u7684_u5173_u7CFB" class="headerlink" title="在单线程模型中Message、Handler、Message Queue、Looper之间的关系"></a>在单线程模型中Message、Handler、Message Queue、Looper之间的关系</h2><p>Message：包含消息id，存放携带消息数据的消息对象，MessageQueue 统一管理，handler发送和处理； MessageQue 消息队列，管理message的队列，存放handler发过来的消息，链表串联， 经由looper抽取 Looper：消息泵，不断抽取messageQueue中的消息，一个messageque对应 一个looper。实现消息队列创建和消息循环功能。静态方法prepare和loop。 handler： 用来发送message和处理message。在使用handler之前必须使用looper创建了 队列，否则抛出异常。需要实现handleMessage来处理message。Thread 线程 负责调 度整个消息循环，即消息循环的执行场所。 有个问题，为什么非要出来个looper，而不是把looper的功能放到handler里面实现呢？ 我觉得是面向对象的原则，由于looper里面的功能基本不怎么变化，也不需要用户了解， 因此将其封装，仅仅将handler和message对用户开放去调用。<br><img src="https://github.com/paceboy/Android-InterView/blob/master/handler-howtowork.png" alt=""></p>
+<h2 id="TCP_u76843_u6B21_u63E1_u624B_u548C4_u6B21_u6325_u624B"><a href="#TCP_u76843_u6B21_u63E1_u624B_u548C4_u6B21_u6325_u624B" class="headerlink" title="TCP的3次握手和4次挥手"></a>TCP的3次握手和4次挥手</h2><p>3次握手连接，首先连接端发送一个连接请求，syn为1，接收端回复一个确认表示同意连接， 连接端发送确认，表示收到接收端的连接确认，至此连接成功，可以全双工的发送数据。</p>
+<p>4次断开连接，首先连接端发送fin为1的请求，表示自己不再发送数据，接收端收到后发送 确认，并再次发送一个自己的fin请求，表示自己也不再发送数据，连接端发送确认，至此 断开连接成功。<br><img src="https://github.com/paceboy/Android-InterView/raw/master/tcpconnect.png" alt=""><br><img src="https://github.com/paceboy/Android-InterView/raw/master/tcpdisconnect.png" alt=""></p>
+<h2 id="tcp_u4E09_u6B21_u63E1_u624B_u5B58_u5728_u7684_u98CE_u9669_uFF1F"><a href="#tcp_u4E09_u6B21_u63E1_u624B_u5B58_u5728_u7684_u98CE_u9669_uFF1F" class="headerlink" title="tcp三次握手存在的风险？"></a>tcp三次握手存在的风险？</h2><p>攻击方伪造IP地址发送大量的SYN包，使服务端发送的SYN+ACK包得不到确认，服务器端将 为了维护一个非常大的半连Syn攻击就是 攻击客户端 在短时间内伪造大量不存在的IP地址， 向服务器不断地发送syn包，服务器回复确认包，并等待客户的确认，由于源地址是不存在的 ，服务器需要不断的重发直 至超时，这些伪造的SYN包将长时间占用未连接队列，正常的SYN 请求被丢弃，目标系统运行缓慢，严重者引起网络堵塞甚至系统瘫痪。 Syn攻击是一个典型的DDOS攻击。检测SYN攻击非常的方便，当你在服务器上看到大量的半连 接状态时，特别是源IP地址是随机的，基本上可以断定这是一次SYN攻击.在Linux下可以如 下命令检测是否被Syn攻击 netstat -n -p TCP | grep SYN_RECV 一般较新的TCP/IP协议栈都对这一过程进行修正来防范Syn攻击，修改tcp协议实现。主要方 法有SynAttackProtect保护机制、SYN cookies技术、增加最大半连接和缩短超时时间等. 但是不能完全防范syn攻击。接列表而消耗非常多的资源，服务器失去响应，即服务器端受 到了SYN Flood攻击。</p>
+<h2 id="u4E3A_u4EC0_u4E48_u5173_u95ED_u8FDE_u63A5_u8981_u56DB_u6B21_u6325_u624B_uFF1F"><a href="#u4E3A_u4EC0_u4E48_u5173_u95ED_u8FDE_u63A5_u8981_u56DB_u6B21_u6325_u624B_uFF1F" class="headerlink" title="为什么关闭连接要四次挥手？"></a>为什么关闭连接要四次挥手？</h2><p>TCP是全双工通道，一方发起关闭请求只关闭了一个方向上的通道，所以建立连接的双方都 要发起关闭请求并确认来关闭各自方向上的数据通道。</p>
+<h2 id="u4E3A_u4EC0_u4E48_u5EFA_u7ACB_u8FDE_u63A5_u8981_u4E09_u6B21_u63E1_u624B_uFF1F"><a href="#u4E3A_u4EC0_u4E48_u5EFA_u7ACB_u8FDE_u63A5_u8981_u4E09_u6B21_u63E1_u624B_uFF1F" class="headerlink" title="为什么建立连接要三次握手？"></a>为什么建立连接要三次握手？</h2><p>目的： 防止已经失效的连接请求到达服务端，创建无效的连接，浪费资源。 说明： 当客户端发出的第一个连接请求在网络上的某个节点被滞留了（网络会存在许多不 可靠的因素），过一段时间后突然又到达了服务端，服务端误以为这是一个新的建立连接 的请求，于是就会向客户端发出确认包并建立连接。 实际上客户端当前并没有发出创建连接的请求，就会丢弃服务端的确认包。而服务端却创 建了连接并等待客户端发送数据，浪费了相关的资源。</p>
+<h2 id="tcp_u62E5_u585E_u63A7_u5236_u673A_u5236_uFF1F"><a href="#tcp_u62E5_u585E_u63A7_u5236_u673A_u5236_uFF1F" class="headerlink" title="tcp拥塞控制机制？"></a>tcp拥塞控制机制？</h2><p>计算机网络中的带宽、交换节点中缓存和处理机等，都是网络资源。在某段时间，若对网络 中某一资源的需求超过了该资源所能提供的可用部分，网络的性能就会变坏。这种情况就叫 做阻塞。拥塞控制就是防止过多的数据注入网络中，这样可以使网络中的路由器或链路不致 过载。拥塞控制是一个全局性的过程，和流量控制不同，流量控制指点对点通信量的控制。</p>
+<ul>
+<li>(1)拥塞窗口（cwnd）:拥塞控制的关键参数，它描述源端在拥塞控制情况下一次最多能发送 的数据包的数量。</li>
+<li>(2) 通告窗口（awin）:接收端给源端预设的发送窗口大小，它只在TCP连接建立的初始阶段 发挥作用。</li>
+<li>(3) 发送窗口（win）:源端每次实际发送数据的窗口大小。</li>
+<li>(4) 慢启动阈值（ssthresh）:拥塞控制中慢启动阶段和拥塞避免阶段的分界点。初始值通 常设为65535byte。</li>
+<li>(5) 回路响应时间（RTT）:一个TCP数据包从源端发送到接收端，源端收到接收端确认的时间 间隔。</li>
+<li>(6) 超时重传计数器（RTO）:描述数据包从发送到失效的时间间隔，是判断数据包丢失与否 及网络是否拥塞的重要参数。通常设为2RTT或5RTT。</li>
+<li>(7) 快速重传阈值(tcprexmtthresh):：能触发快速重传的源端收到重复确认包ACK的个数。 当此个数超过tcprexmtthresh时，网络就进入快速重传阶段。tcprexmtthresh缺省值为3。</li>
+</ul>
+<h3 id="1_uFF0C_u6162_u5F00_u59CB_u4E0E_u62E5_u585E_u907F_u514D"><a href="#1_uFF0C_u6162_u5F00_u59CB_u4E0E_u62E5_u585E_u907F_u514D" class="headerlink" title="1，慢开始与拥塞避免"></a>1，慢开始与拥塞避免</h3><p>发送方维持一个叫做拥塞窗口cwnd(congestion window)的状态变量。拥塞窗口的大小取决 于网络的拥塞程度，并且动态地在变化。发送方让自己的发送窗口等于拥塞窗口个，另外 考虑到接收方的接受能力，发送窗口可能小于拥塞窗口。 慢开始算法的思路就是，不要一开始就发送大量的数据，先探测一下网络的拥塞程度， 就是由小到大的逐渐增加拥塞窗口的大小。如图所示：<br><img src="https://github.com/paceboy/Android-InterView/blob/master/tcp%E6%85%A2%E5%BC%80%E5%A7%8B.png" alt=""><br>当建立连接后，设置cwnd为1（这里用报文段的个数的拥塞窗口大小举例说明慢开始算法 ，实时拥塞窗口大小是以字节为单位的），发送1个数据包，接收方接收到后，发送确认 信息；cwnd变为1×2，发送2个数据包，接收方接收到后，发送2个确认信息；cwnd变为2×2 ，发送4个数据包，接收方收到后，发送4个确认信息，cwnd变为4×2… 为了防止cwnd增长过大引起网络拥塞，还需设置一个慢开始门限ssthresh状态变量。 ssthresh的用法如下： 当cwndssthresh时，改用拥塞避免算法。 当cwnd=ssthresh时，慢开始与拥塞避免算法任意。 拥塞避免算法让拥塞窗口缓慢增长，即每经过一个往返时间RTT就把发送方的拥塞窗口 cwnd加1，而不是加倍。这样拥塞窗口按线性规律缓慢增长。 无论是在慢开始阶段还是在拥塞避免阶段，只要发送方判断网络出现拥塞（其根据就是 没有收到确认，虽然没有收到确认可能是其他原因的分组丢失，但是因为无法判定，所 以都当做拥塞来处理），就把慢开始门限设置为出现拥塞时的发送窗口大小的一半。然 后把拥塞窗口设置为1，执行慢开始算法。</p>
+<h3 id="2_uFF0C_u5FEB_u91CD_u4F20_u548C_u5FEB_u6062_u590D"><a href="#2_uFF0C_u5FEB_u91CD_u4F20_u548C_u5FEB_u6062_u590D" class="headerlink" title="2，快重传和快恢复"></a>2，快重传和快恢复</h3><p>快重传要求接收方在收到一个失序的报文段后就立即发出重复确认，而不要等到自己发 送数据是捎带确认。快重传算法规定，发送发只要一连收到3个重复确认就应当立即重传 对方尚未收到的报文段，而不必继续等待设置的重传计时器时间到期。 快重传配合使用的还有快恢复算法，有以下两个要点: ①当发送方连续收到三个重复确认时，就执行“乘法减小”算法，把ssthresh门限减半。但 是接下去并不执行慢开始算法。 ②考虑到如果网络出现拥塞的话就不会收到好几个重复的确认，所以发送方现在认为网络 可能没有出现拥塞。所以此时不执行慢开始算法，而是将cwnd设置为ssthresh的大小，然 后执行拥塞避免算法。如<br><img src="https://github.com/paceboy/Android-InterView/blob/master/tcp%E5%BF%AB%E9%87%8D%E4%BC%A0.png" alt=""></p>
+<h3 id="u66F4_u591A_u8BF7_u53C2_u8003"><a href="#u66F4_u591A_u8BF7_u53C2_u8003" class="headerlink" title="更多请参考"></a>更多请参考</h3><ul>
+<li><a href="http://blog.csdn.net/sicofield/article/details/9708383" target="_blank" rel="external">http://blog.csdn.net/sicofield/article/details/9708383</a></li>
+<li><a href="http://blog.chinaunix.net/uid-27122224-id-3276910.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-27122224-id-3276910.html</a></li>
+<li><a href="http://www.cnblogs.com/zhuzheic/archive/2013/04/08/3008364.html" target="_blank" rel="external">http://www.cnblogs.com/zhuzheic/archive/2013/04/08/3008364.html</a></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/30/Android内存优化之OOM/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android内存优化之OOM</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="常见问题" data-title="Android常见问题" data-url="http://www.baoxiang.org.cn/2016/01/31/常见问题/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Fang Yuan
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
