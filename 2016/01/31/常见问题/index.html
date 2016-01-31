@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://github.com/paceboy/Android-InterView/blob/master/tcp%E6%85%A2%E5%BC%80%E5%A7%8B.png">
 <meta property="og:image" content="https://github.com/paceboy/Android-InterView/blob/master/tcp%E5%BF%AB%E9%87%8D%E4%BC%A0.png">
 <meta property="og:image" content="https://github.com/paceboy/Android-InterView/blob/master/aidl_structure.png">
-<meta property="og:updated_time" content="2016-01-31T03:36:24.464Z">
+<meta property="og:updated_time" content="2016-01-31T03:40:49.579Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android常见问题">
 <meta name="twitter:description" content="Activity由于某原因被系统回收了，如何在被系统回收之前保存当前状态？在onSaveInstanceState()中保存其状态。activity被置于后台时，在执行onStop之前，通过onSaveInstacneState 保存当前activity状态。如果被系统杀死，再次被调起时，，在onResume之前，onStart之后，通过 onRestoreInstanceState（）来恢复其状">
@@ -318,8 +318,8 @@
 <p>还有一点是出于安全性考虑。Android作为一个开放式，拥有众多开发者的的平台，应用程序的来源广泛，确保智能终端的安全是非常重要的。终端用户不希望从网上下载的程序在不知情的情况下偷窥隐私数据，连接无线网络，长期操作底层设备导致电池很快耗尽等等。传统IPC没有任何安全措施，完全依赖上层协议来确保。首先传统IPC的接收方无法获得对方进程可靠的UID/PID（用户ID/进程ID），从而无法鉴别对方身份。Android为每个安装好的应用程序分配了自己的UID，故进程的UID是鉴别进程身份的重要标志。使用传统IPC只能由用户在数据包里填入UID/PID，但这样不可靠，容易被恶意程序利用。可靠的身份标记只有由IPC机制本身在内核中添加。其次传统IPC访问接入点是开放的，无法建立私有通道。比如命名管道的名称，system V的键值，socket的ip地址或文件名都是开放的，只要知道这些接入点的程序都可以和对端建立连接，不管怎样都无法阻止恶意程序通过猜测接收方地址获得连接。</p>
 <p>Binder提供了远程过程调用RPC功能，英文意思是粘结剂的意思。在android的binder机制中，由一系列组件组成，分别是client，server，service manager和binder驱动程序，其中client，server和service manager运行在用户空间，binder驱动程序运行在内核空间，binder就是将这四个组件粘合在一起的粘结剂，其中核心组件便是binder驱动程序，service manger提供了辅助管理功能，client和server正式在binder驱动和service manger提供的基础设施上，进行client-server之间的通信。Service Manager和Binder驱动已经在Android平台中实现好，开发者只要按照规范实现自己的Client和Server组件就可以了。如图所示<br><img src="https://github.com/paceboy/Android-InterView/blob/master/aidl_structure.png" alt=""><br>调用方式的实现参考：</p>
 <ul>
-<li><a href="http://blog.csdn.net/songjinshi/article/details/22918405" target="_blank" rel="external"></a></li>
-<li><a href="http://www.cnblogs.com/albert1017/p/3849585.html" target="_blank" rel="external"></a></li>
+<li><a href="http://blog.csdn.net/songjinshi/article/details/22918405" target="_blank" rel="external">http://blog.csdn.net/songjinshi/article/details/22918405</a></li>
+<li><a href="http://www.cnblogs.com/albert1017/p/3849585.html" target="_blank" rel="external">http://www.cnblogs.com/albert1017/p/3849585.html</a></li>
 </ul>
 <h2 id="AMS_WMS_u4F5C_u7528_uFF1F"><a href="#AMS_WMS_u4F5C_u7528_uFF1F" class="headerlink" title="AMS WMS作用？"></a>AMS WMS作用？</h2><p>1,ams :进程管理，内存管理，统一调各应用程序的activity 2，wms：管理所有窗口。创建、删除窗口，设置焦点窗口。保持窗口层次关系，以便surfaceflinger能据此绘制屏幕。将窗口信息传递给inputmanager对象，以便inputdispatcher能够把输入消息拍发给和屏幕上显示一致的窗口。</p>
 
