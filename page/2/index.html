@@ -80,13 +80,13 @@
 				<div class="tips-box hide">
 					<div class="tips-arrow"></div>
 					<ul class="tips-inner">
-						<li>Menu</li>
-						<li>Tags</li>
+						<li>菜单</li>
+						<li>標籤</li>
 						
-						<li>Links</li>
+						<li>友情链接</li>
 						
 						
-						<li>Über</li>
+						<li>關於</li>
 						
 					</ul>
 				</div>
@@ -102,6 +102,8 @@
 							<li><a href="/">主页</a></li>
 				        
 							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/2016/02/02/resume/">关于我</a></li>
 				        
 						</ul>
 					</nav>
@@ -121,7 +123,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Android代码/" style="font-size: 20px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 10px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 20px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
+						<a href="/tags/Android代码/" style="font-size: 20px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 20px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
 					</div>
 				</section>
 				
@@ -184,7 +186,7 @@
 				
 				<section class="switch-part switch-part4">
 				
-					<div id="js-aboutme">me.findViewById(&quot;R.id.world&quot;)</div>
+					<div id="js-aboutme">me.findViewById(R.id.World);</div>
 				</section>
 				
 			</div>
@@ -219,6 +221,8 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/2016/02/02/resume/">关于我</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -238,6 +242,833 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-36个Android开发常用代码片段" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/30/36个Android开发常用代码片段/" class="article-date">
+  	<time datetime="2016-01-30T05:30:19.000Z" itemprop="datePublished">2016-01-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/30/36个Android开发常用代码片段/">36个Android开发常用代码片段</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="u62E8_u6253_u7535_u8BDD"><a href="#u62E8_u6253_u7535_u8BDD" class="headerlink" title="拨打电话"></a>拨打电话</h1><pre><code>public static void call(Context context, String phoneNumber) {
+        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(&quot;tel:&quot; + phoneNumber)));
+    }
+</code></pre><h1 id="u8DF3_u8F6C_u81F3_u62E8_u53F7_u754C_u9762"><a href="#u8DF3_u8F6C_u81F3_u62E8_u53F7_u754C_u9762" class="headerlink" title="跳转至拨号界面"></a>跳转至拨号界面</h1><pre><code>public static void callDial(Context context, String phoneNumber) {
+        context.startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(&quot;tel:&quot; + phoneNumber)));
+    }
+</code></pre><h1 id="u53D1_u9001_u77ED_u4FE1"><a href="#u53D1_u9001_u77ED_u4FE1" class="headerlink" title="发送短信"></a>发送短信</h1><pre><code>public static void sendSms(Context context, String phoneNumber,
+            String content) {
+        Uri uri = Uri.parse(&quot;smsto:&quot;
+                + (TextUtils.isEmpty(phoneNumber) ? &quot;&quot; : phoneNumber));
+        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+        intent.putExtra(&quot;sms_body&quot;, TextUtils.isEmpty(content) ? &quot;&quot; : content);
+        context.startActivity(intent);
+    }
+</code></pre><h1 id="u5524_u9192_u5C4F_u5E55_u5E76_u89E3_u9501"><a href="#u5524_u9192_u5C4F_u5E55_u5E76_u89E3_u9501" class="headerlink" title="唤醒屏幕并解锁"></a>唤醒屏幕并解锁</h1><pre><code>    public static void wakeUpAndUnlock(Context context){  
+    KeyguardManager km= (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);  
+    KeyguardManager.KeyguardLock kl = km.newKeyguardLock(&quot;unLock&quot;);  
+    //解锁  
+    kl.disableKeyguard();  
+    //获取电源管理器对象  
+    PowerManager pm=(PowerManager) context.getSystemService(Context.POWER_SERVICE);  
+    //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag  
+    PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK,&quot;bright&quot;);  
+    //点亮屏幕  
+    wl.acquire();  
+    //释放  
+    wl.release();  
+}
+</code></pre><h1 id="u9700_u8981_u6DFB_u52A0_u6743_u9650"><a href="#u9700_u8981_u6DFB_u52A0_u6743_u9650" class="headerlink" title="需要添加权限"></a>需要添加权限</h1><pre><code>&lt;uses-permission android:name=&quot;android.permission.WAKE_LOCK&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.DISABLE_KEYGUARD&quot; /&gt;
+</code></pre><h1 id="u5224_u65AD_u5F53_u524DApp_u5904_u4E8E_u524D_u53F0_u8FD8_u662F_u540E_u53F0_u72B6_u6001"><a href="#u5224_u65AD_u5F53_u524DApp_u5904_u4E8E_u524D_u53F0_u8FD8_u662F_u540E_u53F0_u72B6_u6001" class="headerlink" title="判断当前App处于前台还是后台状态"></a>判断当前App处于前台还是后台状态</h1><pre><code>public static boolean isApplicationBackground(final Context context) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        @SuppressWarnings(&quot;deprecation&quot;)
+        List&lt;ActivityManager.RunningTaskInfo&gt; tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+</code></pre><h1 id="u9700_u8981_u6DFB_u52A0_u6743_u9650-1"><a href="#u9700_u8981_u6DFB_u52A0_u6743_u9650-1" class="headerlink" title="需要添加权限"></a>需要添加权限</h1><pre><code>&lt;uses-permission android:name=&quot;android.permission.GET_TASKS&quot; /&gt;
+</code></pre><h1 id="u5224_u65AD_u5F53_u524D_u624B_u673A_u662F_u5426_u5904_u4E8E_u9501_u5C4F_28_u7761_u7720_29_u72B6_u6001"><a href="#u5224_u65AD_u5F53_u524D_u624B_u673A_u662F_u5426_u5904_u4E8E_u9501_u5C4F_28_u7761_u7720_29_u72B6_u6001" class="headerlink" title="判断当前手机是否处于锁屏(睡眠)状态"></a>判断当前手机是否处于锁屏(睡眠)状态</h1><pre><code>public static boolean isSleeping(Context context) {
+        KeyguardManager kgMgr = (KeyguardManager) context
+                .getSystemService(Context.KEYGUARD_SERVICE);
+        boolean isSleeping = kgMgr.inKeyguardRestrictedInputMode();
+        return isSleeping;
+    }
+</code></pre><h1 id="u5224_u65AD_u5F53_u524D_u662F_u5426_u6709_u7F51_u7EDC_u8FDE_u63A5"><a href="#u5224_u65AD_u5F53_u524D_u662F_u5426_u6709_u7F51_u7EDC_u8FDE_u63A5" class="headerlink" title="判断当前是否有网络连接"></a>判断当前是否有网络连接</h1><pre><code>public static boolean isOnline(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context
+                .getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo info = manager.getActiveNetworkInfo();
+        if (info != null &amp;&amp; info.isConnected()) {
+            return true;
+        }
+        return false;
+    }
+</code></pre><h1 id="u5224_u65AD_u5F53_u524D_u662F_u5426_u662FWIFI_u8FDE_u63A5_u72B6_u6001"><a href="#u5224_u65AD_u5F53_u524D_u662F_u5426_u662FWIFI_u8FDE_u63A5_u72B6_u6001" class="headerlink" title="判断当前是否是WIFI连接状态"></a>判断当前是否是WIFI连接状态</h1><pre><code>public static boolean isWifiConnected(Context context) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) context
+            .getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo wifiNetworkInfo = connectivityManager
+            .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    if (wifiNetworkInfo.isConnected()) {
+        return true;
+    }
+    return false;
+}
+</code></pre><h1 id="u5B89_u88C5APK"><a href="#u5B89_u88C5APK" class="headerlink" title="安装APK"></a>安装APK</h1><pre><code>public static void installApk(Context context, File file) {
+    Intent intent = new Intent();
+    intent.setAction(&quot;android.intent.action.VIEW&quot;);
+    intent.addCategory(&quot;android.intent.category.DEFAULT&quot;);
+    intent.setType(&quot;application/vnd.android.package-archive&quot;);
+    intent.setDataAndType(Uri.fromFile(file),
+            &quot;application/vnd.android.package-archive&quot;);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
+}
+</code></pre><h1 id="u5224_u65AD_u5F53_u524D_u8BBE_u5907_u662F_u5426_u4E3A_u624B_u673A"><a href="#u5224_u65AD_u5F53_u524D_u8BBE_u5907_u662F_u5426_u4E3A_u624B_u673A" class="headerlink" title="判断当前设备是否为手机"></a>判断当前设备是否为手机</h1><pre><code>public static boolean isPhone(Context context) {
+    TelephonyManager telephony = (TelephonyManager) context
+            .getSystemService(Context.TELEPHONY_SERVICE);
+    if (telephony.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+        return false;
+    } else {
+        return true;
+    }
+}
+</code></pre><h1 id="u83B7_u53D6_u5F53_u524D_u8BBE_u5907_u5BBD_u9AD8_uFF0C_u5355_u4F4Dpx"><a href="#u83B7_u53D6_u5F53_u524D_u8BBE_u5907_u5BBD_u9AD8_uFF0C_u5355_u4F4Dpx" class="headerlink" title="获取当前设备宽高，单位px"></a>获取当前设备宽高，单位px</h1><pre><code>@SuppressWarnings(&quot;deprecation&quot;)
+public static int getDeviceWidth(Context context) {
+    WindowManager manager = (WindowManager) context
+            .getSystemService(Context.WINDOW_SERVICE);
+    return manager.getDefaultDisplay().getWidth();
+}
+
+@SuppressWarnings(&quot;deprecation&quot;)
+public static int getDeviceHeight(Context context) {
+    WindowManager manager = (WindowManager) context
+            .getSystemService(Context.WINDOW_SERVICE);
+    return manager.getDefaultDisplay().getHeight();
+}
+</code></pre><h1 id="u83B7_u53D6_u5F53_u524D_u8BBE_u5907_u7684IMEI_uFF0C_u9700_u8981_u4E0E_u4E0A_u9762_u7684isPhone_28_29_u4E00_u8D77_u4F7F_u7528"><a href="#u83B7_u53D6_u5F53_u524D_u8BBE_u5907_u7684IMEI_uFF0C_u9700_u8981_u4E0E_u4E0A_u9762_u7684isPhone_28_29_u4E00_u8D77_u4F7F_u7528" class="headerlink" title="获取当前设备的IMEI，需要与上面的isPhone()一起使用"></a>获取当前设备的IMEI，需要与上面的isPhone()一起使用</h1><pre><code>@TargetApi(Build.VERSION_CODES.CUPCAKE)
+public static String getDeviceIMEI(Context context) {
+    String deviceId;
+    if (isPhone(context)) {
+        TelephonyManager telephony = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        deviceId = telephony.getDeviceId();
+    } else {
+        deviceId = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+    }
+    return deviceId;
+}
+</code></pre><h1 id="u83B7_u53D6_u5F53_u524D_u8BBE_u5907_u7684MAC_u5730_u5740"><a href="#u83B7_u53D6_u5F53_u524D_u8BBE_u5907_u7684MAC_u5730_u5740" class="headerlink" title="获取当前设备的MAC地址"></a>获取当前设备的MAC地址</h1><pre><code>public static String getMacAddress(Context context) {
+    String macAddress;
+    WifiManager wifi = (WifiManager) context
+            .getSystemService(Context.WIFI_SERVICE);
+    WifiInfo info = wifi.getConnectionInfo();
+    macAddress = info.getMacAddress();
+    if (null == macAddress) {
+        return &quot;&quot;;
+    }
+    macAddress = macAddress.replace(&quot;:&quot;, &quot;&quot;);
+    return macAddress;
+}
+</code></pre><h1 id="u83B7_u53D6_u5F53_u524D_u7A0B_u5E8F_u7684_u7248_u672C_u53F7"><a href="#u83B7_u53D6_u5F53_u524D_u7A0B_u5E8F_u7684_u7248_u672C_u53F7" class="headerlink" title="获取当前程序的版本号"></a>获取当前程序的版本号</h1><pre><code>public static String getAppVersion(Context context) {
+    String version = &quot;0&quot;;
+    try {
+        version = context.getPackageManager().getPackageInfo(
+                context.getPackageName(), 0).versionName;
+    } catch (PackageManager.NameNotFoundException e) {
+        e.printStackTrace();
+    }
+    return version;
+}
+</code></pre><h1 id="u6536_u96C6_u8BBE_u5907_u4FE1_u606F_uFF0C_u7528_u4E8E_u4FE1_u606F_u7EDF_u8BA1_u5206_u6790"><a href="#u6536_u96C6_u8BBE_u5907_u4FE1_u606F_uFF0C_u7528_u4E8E_u4FE1_u606F_u7EDF_u8BA1_u5206_u6790" class="headerlink" title="收集设备信息，用于信息统计分析"></a>收集设备信息，用于信息统计分析</h1><pre><code>public static Properties collectDeviceInfo(Context context) {
+        Properties mDeviceCrashInfo = new Properties();
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_ACTIVITIES);
+            if (pi != null) {
+                mDeviceCrashInfo.put(VERSION_NAME,
+                        pi.versionName == null ? &quot;not set&quot; : pi.versionName);
+                mDeviceCrashInfo.put(VERSION_CODE, pi.versionCode);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, &quot;Error while collect package info&quot;, e);
+        }
+        Field[] fields = Build.class.getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                mDeviceCrashInfo.put(field.getName(), field.get(null));
+            } catch (Exception e) {
+                Log.e(TAG, &quot;Error while collect crash info&quot;, e);
+            }
+        }
+
+        return mDeviceCrashInfo;
+    }
+
+public static String collectDeviceInfoStr(Context context) {
+        Properties prop = collectDeviceInfo(context);
+        Set deviceInfos = prop.keySet();
+        StringBuilder deviceInfoStr = new StringBuilder(&quot;{\n&quot;);
+        for (Iterator iter = deviceInfos.iterator(); iter.hasNext();) {
+            Object item = iter.next();
+            deviceInfoStr.append(&quot;\t\t\t&quot; + item + &quot;:&quot; + prop.get(item)
+                    + &quot;, \n&quot;);
+        }
+        deviceInfoStr.append(&quot;}&quot;);
+        return deviceInfoStr.toString();
+    }
+</code></pre><h1 id="u662F_u5426_u6709SD_u5361"><a href="#u662F_u5426_u6709SD_u5361" class="headerlink" title="是否有SD卡"></a>是否有SD卡</h1><pre><code>public static boolean haveSDCard() {
+        return android.os.Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED);
+    }
+</code></pre><h1 id="u52A8_u6001_u9690_u85CF_u8F6F_u952E_u76D8"><a href="#u52A8_u6001_u9690_u85CF_u8F6F_u952E_u76D8" class="headerlink" title="动态隐藏软键盘"></a>动态隐藏软键盘</h1><pre><code>@TargetApi(Build.VERSION_CODES.CUPCAKE)
+    public static void hideSoftInput(Activity activity) {
+        View view = activity.getWindow().peekDecorView();
+        if (view != null) {
+            InputMethodManager inputmanger = (InputMethodManager) activity
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
+public static void hideSoftInput(Context context, EditText edit) {
+        edit.clearFocus();
+        InputMethodManager inputmanger = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputmanger.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+    }
+</code></pre><h1 id="u52A8_u6001_u663E_u793A_u8F6F_u952E_u76D8"><a href="#u52A8_u6001_u663E_u793A_u8F6F_u952E_u76D8" class="headerlink" title="动态显示软键盘"></a>动态显示软键盘</h1><pre><code>@TargetApi(Build.VERSION_CODES.CUPCAKE)
+public static void showSoftInput(Context context, EditText edit) {
+        edit.setFocusable(true);
+        edit.setFocusableInTouchMode(true);
+        edit.requestFocus();
+        InputMethodManager inputManager = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.showSoftInput(edit, 0);
+    }
+</code></pre><h1 id="u52A8_u6001_u663E_u793A_u6216_u8005_u662F_u9690_u85CF_u8F6F_u952E_u76D8"><a href="#u52A8_u6001_u663E_u793A_u6216_u8005_u662F_u9690_u85CF_u8F6F_u952E_u76D8" class="headerlink" title="动态显示或者是隐藏软键盘"></a>动态显示或者是隐藏软键盘</h1><pre><code>@TargetApi(Build.VERSION_CODES.CUPCAKE)
+public static void toggleSoftInput(Context context, EditText edit) {
+        edit.setFocusable(true);
+        edit.setFocusableInTouchMode(true);
+        edit.requestFocus();
+        InputMethodManager inputManager = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+</code></pre><h1 id="u4E3B_u52A8_u56DE_u5230Home_uFF0C_u540E_u53F0_u8FD0_u884C"><a href="#u4E3B_u52A8_u56DE_u5230Home_uFF0C_u540E_u53F0_u8FD0_u884C" class="headerlink" title="主动回到Home，后台运行"></a>主动回到Home，后台运行</h1><pre><code>public static void goHome(Context context) {
+        Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+        mHomeIntent.addCategory(Intent.CATEGORY_HOME);
+        mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        context.startActivity(mHomeIntent);
+    }
+</code></pre><h1 id="u83B7_u53D6_u72B6_u6001_u680F_u9AD8_u5EA6"><a href="#u83B7_u53D6_u72B6_u6001_u680F_u9AD8_u5EA6" class="headerlink" title="获取状态栏高度"></a>获取状态栏高度</h1><p>(注意，要在onWindowFocusChanged中调用，在onCreate中获取高度为0)</p>
+<pre><code>@TargetApi(Build.VERSION_CODES.CUPCAKE)
+public static int getStatusBarHeight(Activity activity) {
+    Rect frame = new Rect();
+    activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        return frame.top;
+    }
+</code></pre><h1 id="u83B7_u53D6_u72B6_u6001_u680F_u9AD8_u5EA6_uFF0B_u6807_u9898_u680F_28ActionBar_29_u9AD8_u5EA6"><a href="#u83B7_u53D6_u72B6_u6001_u680F_u9AD8_u5EA6_uFF0B_u6807_u9898_u680F_28ActionBar_29_u9AD8_u5EA6" class="headerlink" title="获取状态栏高度＋标题栏(ActionBar)高度"></a>获取状态栏高度＋标题栏(ActionBar)高度</h1><p>(注意，如果没有ActionBar，那么获取的高度将和上面的是一样的，只有状态栏的高度)</p>
+<pre><code>public static int getTopBarHeight(Activity activity) {
+        return activity.getWindow().findViewById(Window.ID_ANDROID_CONTENT)
+                .getTop();
+    }
+</code></pre><h1 id="u83B7_u53D6MCC+MNC_u4EE3_u7801__28SIM_u5361_u8FD0_u8425_u5546_u56FD_u5BB6_u4EE3_u7801_u548C_u8FD0_u8425_u5546_u7F51_u7EDC_u4EE3_u7801_29"><a href="#u83B7_u53D6MCC+MNC_u4EE3_u7801__28SIM_u5361_u8FD0_u8425_u5546_u56FD_u5BB6_u4EE3_u7801_u548C_u8FD0_u8425_u5546_u7F51_u7EDC_u4EE3_u7801_29" class="headerlink" title="获取MCC+MNC代码 (SIM卡运营商国家代码和运营商网络代码)"></a>获取MCC+MNC代码 (SIM卡运营商国家代码和运营商网络代码)</h1><p>{仅当用户已在网络注册时有效, CDMA 可能会无效（中国移动：46000 46002, 中国联通：46001,中国电信：46003）}</p>
+<pre><code>public static String getNetworkOperator(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getNetworkOperator();
+    }
+</code></pre><h1 id="u8FD4_u56DE_u79FB_u52A8_u7F51_u7EDC_u8FD0_u8425_u5546_u7684_u540D_u5B57"><a href="#u8FD4_u56DE_u79FB_u52A8_u7F51_u7EDC_u8FD0_u8425_u5546_u7684_u540D_u5B57" class="headerlink" title="返回移动网络运营商的名字"></a>返回移动网络运营商的名字</h1><p>(例：中国联通、中国移动、中国电信) 仅当用户已在网络注册时有效, CDMA 可能会无效)</p>
+<pre><code>public static String getNetworkOperatorName(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getNetworkOperatorName();
+    }
+</code></pre><h1 id="u8FD4_u56DE_u79FB_u52A8_u7EC8_u7AEF_u7C7B_u578B"><a href="#u8FD4_u56DE_u79FB_u52A8_u7EC8_u7AEF_u7C7B_u578B" class="headerlink" title="返回移动终端类型"></a>返回移动终端类型</h1><p>PHONE_TYPE_NONE :0 手机制式未知<br>PHONE_TYPE_GSM :1 手机制式为GSM，移动和联通<br>PHONE_TYPE_CDMA :2 手机制式为CDMA，电信<br>PHONE_TYPE_SIP:3</p>
+<pre><code>public static int getPhoneType(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getPhoneType();
+    }
+</code></pre><h1 id="u5224_u65AD_u624B_u673A_u8FDE_u63A5_u7684_u7F51_u7EDC_u7C7B_u578B_282G_2C3G_2C4G_29"><a href="#u5224_u65AD_u624B_u673A_u8FDE_u63A5_u7684_u7F51_u7EDC_u7C7B_u578B_282G_2C3G_2C4G_29" class="headerlink" title="判断手机连接的网络类型(2G,3G,4G)"></a>判断手机连接的网络类型(2G,3G,4G)</h1><p>联通的3G为UMTS或HSDPA，移动和联通的2G为GPRS或EGDE，电信的2G为CDMA，电信的3G为EVDO</p>
+<pre><code>public class Constants {
+    /**
+     * Unknown network class
+     */
+    public static final int NETWORK_CLASS_UNKNOWN = 0;
+
+    /**
+     * wifi net work
+     */
+    public static final int NETWORK_WIFI = 1;
+
+    /**
+     * &quot;2G&quot; networks
+     */
+    public static final int NETWORK_CLASS_2_G = 2;
+
+    /**
+     * &quot;3G&quot; networks
+     */
+    public static final int NETWORK_CLASS_3_G = 3;
+
+    /**
+     * &quot;4G&quot; networks
+     */
+    public static final int NETWORK_CLASS_4_G = 4;
+
+}
+
+public static int getNetWorkClass(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+
+        switch (telephonyManager.getNetworkType()) {
+        case TelephonyManager.NETWORK_TYPE_GPRS:
+        case TelephonyManager.NETWORK_TYPE_EDGE:
+        case TelephonyManager.NETWORK_TYPE_CDMA:
+        case TelephonyManager.NETWORK_TYPE_1xRTT:
+        case TelephonyManager.NETWORK_TYPE_IDEN:
+            return Constants.NETWORK_CLASS_2_G;
+
+        case TelephonyManager.NETWORK_TYPE_UMTS:
+        case TelephonyManager.NETWORK_TYPE_EVDO_0:
+        case TelephonyManager.NETWORK_TYPE_EVDO_A:
+        case TelephonyManager.NETWORK_TYPE_HSDPA:
+        case TelephonyManager.NETWORK_TYPE_HSUPA:
+        case TelephonyManager.NETWORK_TYPE_HSPA:
+        case TelephonyManager.NETWORK_TYPE_EVDO_B:
+        case TelephonyManager.NETWORK_TYPE_EHRPD:
+        case TelephonyManager.NETWORK_TYPE_HSPAP:
+            return Constants.NETWORK_CLASS_3_G;
+
+        case TelephonyManager.NETWORK_TYPE_LTE:
+            return Constants.NETWORK_CLASS_4_G;
+
+        default:
+            return Constants.NETWORK_CLASS_UNKNOWN;
+        }
+    }
+</code></pre><h1 id="u5224_u65AD_u5F53_u524D_u624B_u673A_u7684_u7F51_u7EDC_u7C7B_u578B_28WIFI_u8FD8_u662F2_2C3_2C4G_29"><a href="#u5224_u65AD_u5F53_u524D_u624B_u673A_u7684_u7F51_u7EDC_u7C7B_u578B_28WIFI_u8FD8_u662F2_2C3_2C4G_29" class="headerlink" title="判断当前手机的网络类型(WIFI还是2,3,4G)"></a>判断当前手机的网络类型(WIFI还是2,3,4G)</h1><p>需要用到上面的方法</p>
+<pre><code>public static int getNetWorkStatus(Context context) {
+        int netWorkType = Constants.NETWORK_CLASS_UNKNOWN;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null &amp;&amp; networkInfo.isConnected()) {
+            int type = networkInfo.getType();
+
+            if (type == ConnectivityManager.TYPE_WIFI) {
+                netWorkType = Constants.NETWORK_WIFI;
+            } else if (type == ConnectivityManager.TYPE_MOBILE) {
+                netWorkType = getNetWorkClass(context);
+            }
+        }
+
+        return netWorkType;
+    }
+</code></pre><h1 id="px-dp_u8F6C_u6362"><a href="#px-dp_u8F6C_u6362" class="headerlink" title="px-dp转换"></a>px-dp转换</h1><pre><code>public static int dip2px(Context context, float dpValue) {
+    final float scale = context.getResources().getDisplayMetrics().density;
+    return (int) (dpValue * scale + 0.5f);
+}
+
+public static int px2dip(Context context, float pxValue) {
+    final float scale = context.getResources().getDisplayMetrics().density;
+    return (int) (pxValue / scale + 0.5f);
+}
+</code></pre><h1 id="px-sp_u8F6C_u6362"><a href="#px-sp_u8F6C_u6362" class="headerlink" title="px-sp转换"></a>px-sp转换</h1><pre><code>public static int px2sp(Context context, float pxValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
+    }
+
+public static int sp2px(Context context, float spValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+</code></pre><h1 id="u628A_u4E00_u4E2A_u6BEB_u79D2_u6570_u8F6C_u5316_u6210_u65F6_u95F4_u5B57_u7B26_u4E32"><a href="#u628A_u4E00_u4E2A_u6BEB_u79D2_u6570_u8F6C_u5316_u6210_u65F6_u95F4_u5B57_u7B26_u4E32" class="headerlink" title="把一个毫秒数转化成时间字符串"></a>把一个毫秒数转化成时间字符串</h1><p>格式为小时/分/秒/毫秒（如：24903600 –&gt; 06小时55分03秒600毫秒）</p>
+<pre><code>/**
+     * @param millis
+     *            要转化的毫秒数。
+     * @param isWhole
+     *            是否强制全部显示小时/分/秒/毫秒。
+     * @param isFormat
+     *            时间数字是否要格式化，如果true：少位数前面补全；如果false：少位数前面不补全。
+     * @return 返回时间字符串：小时/分/秒/毫秒的格式（如：24903600 --&gt; 06小时55分03秒600毫秒）。
+     */
+    public static String millisToString(long millis, boolean isWhole,
+            boolean isFormat) {
+        String h = &quot;&quot;;
+        String m = &quot;&quot;;
+        String s = &quot;&quot;;
+        String mi = &quot;&quot;;
+        if (isWhole) {
+            h = isFormat ? &quot;00小时&quot; : &quot;0小时&quot;;
+            m = isFormat ? &quot;00分&quot; : &quot;0分&quot;;
+            s = isFormat ? &quot;00秒&quot; : &quot;0秒&quot;;
+            mi = isFormat ? &quot;00毫秒&quot; : &quot;0毫秒&quot;;
+        }
+
+        long temp = millis;
+
+        long hper = 60 * 60 * 1000;
+        long mper = 60 * 1000;
+        long sper = 1000;
+
+        if (temp / hper &gt; 0) {
+            if (isFormat) {
+                h = temp / hper &lt; 10 ? &quot;0&quot; + temp / hper : temp / hper + &quot;&quot;;
+            } else {
+                h = temp / hper + &quot;&quot;;
+            }
+            h += &quot;小时&quot;;
+        }
+        temp = temp % hper;
+
+        if (temp / mper &gt; 0) {
+            if (isFormat) {
+                m = temp / mper &lt; 10 ? &quot;0&quot; + temp / mper : temp / mper + &quot;&quot;;
+            } else {
+                m = temp / mper + &quot;&quot;;
+            }
+            m += &quot;分&quot;;
+        }
+        temp = temp % mper;
+
+        if (temp / sper &gt; 0) {
+            if (isFormat) {
+                s = temp / sper &lt; 10 ? &quot;0&quot; + temp / sper : temp / sper + &quot;&quot;;
+            } else {
+                s = temp / sper + &quot;&quot;;
+            }
+            s += &quot;秒&quot;;
+        }
+        temp = temp % sper;
+        mi = temp + &quot;&quot;;
+
+        if (isFormat) {
+            if (temp &lt; 100 &amp;&amp; temp &gt;= 10) {
+                mi = &quot;0&quot; + temp;
+            }
+            if (temp &lt; 10) {
+                mi = &quot;00&quot; + temp;
+            }
+        }
+
+        mi += &quot;毫秒&quot;;
+        return h + m + s + mi;
+    }
+</code></pre><h1 id="u683C_u5F0F_u4E3A_u5C0F_u65F6/_u5206/_u79D2/_u6BEB_u79D2_uFF08_u5982_uFF1A24903600__u2013_26gt_3B_06_u5C0F_u65F655_u520603_u79D2_uFF09_u3002"><a href="#u683C_u5F0F_u4E3A_u5C0F_u65F6/_u5206/_u79D2/_u6BEB_u79D2_uFF08_u5982_uFF1A24903600__u2013_26gt_3B_06_u5C0F_u65F655_u520603_u79D2_uFF09_u3002" class="headerlink" title="格式为小时/分/秒/毫秒（如：24903600 –&gt; 06小时55分03秒）。"></a>格式为小时/分/秒/毫秒（如：24903600 –&gt; 06小时55分03秒）。</h1><pre><code>/**
+     *
+     * @param millis
+     *            要转化的毫秒数。
+     * @param isWhole
+     *            是否强制全部显示小时/分/秒/毫秒。
+     * @param isFormat
+     *            时间数字是否要格式化，如果true：少位数前面补全；如果false：少位数前面不补全。
+     * @return 返回时间字符串：小时/分/秒/毫秒的格式（如：24903600 --&gt; 06小时55分03秒）。
+     */
+    public static String millisToStringMiddle(long millis, boolean isWhole,
+            boolean isFormat) {
+        return millisToStringMiddle(millis, isWhole, isFormat, &quot;小时&quot;, &quot;分钟&quot;, &quot;秒&quot;);
+    }
+
+    public static String millisToStringMiddle(long millis, boolean isWhole,
+            boolean isFormat, String hUnit, String mUnit, String sUnit) {
+        String h = &quot;&quot;;
+        String m = &quot;&quot;;
+        String s = &quot;&quot;;
+        if (isWhole) {
+            h = isFormat ? &quot;00&quot; + hUnit : &quot;0&quot; + hUnit;
+            m = isFormat ? &quot;00&quot; + mUnit : &quot;0&quot; + mUnit;
+            s = isFormat ? &quot;00&quot; + sUnit : &quot;0&quot; + sUnit;
+        }
+
+        long temp = millis;
+
+        long hper = 60 * 60 * 1000;
+        long mper = 60 * 1000;
+        long sper = 1000;
+
+        if (temp / hper &gt; 0) {
+            if (isFormat) {
+                h = temp / hper &lt; 10 ? &quot;0&quot; + temp / hper : temp / hper + &quot;&quot;;
+            } else {
+                h = temp / hper + &quot;&quot;;
+            }
+            h += hUnit;
+        }
+        temp = temp % hper;
+
+        if (temp / mper &gt; 0) {
+            if (isFormat) {
+                m = temp / mper &lt; 10 ? &quot;0&quot; + temp / mper : temp / mper + &quot;&quot;;
+            } else {
+                m = temp / mper + &quot;&quot;;
+            }
+            m += mUnit;
+        }
+        temp = temp % mper;
+
+        if (temp / sper &gt; 0) {
+            if (isFormat) {
+                s = temp / sper &lt; 10 ? &quot;0&quot; + temp / sper : temp / sper + &quot;&quot;;
+            } else {
+                s = temp / sper + &quot;&quot;;
+            }
+            s += sUnit;
+        }
+        return h + m + s;
+    }
+</code></pre><h1 id="u628A_u4E00_u4E2A_u6BEB_u79D2_u6570_u8F6C_u5316_u6210_u65F6_u95F4_u5B57_u7B26_u4E32_u3002_u683C_u5F0F_u4E3A_u5C0F_u65F6/_u5206/_u79D2/_u6BEB_u79D2_uFF08_u5982_uFF1A24903600__u2013_26gt_3B_06_u5C0F_u65F655_u5206_u949F_uFF09"><a href="#u628A_u4E00_u4E2A_u6BEB_u79D2_u6570_u8F6C_u5316_u6210_u65F6_u95F4_u5B57_u7B26_u4E32_u3002_u683C_u5F0F_u4E3A_u5C0F_u65F6/_u5206/_u79D2/_u6BEB_u79D2_uFF08_u5982_uFF1A24903600__u2013_26gt_3B_06_u5C0F_u65F655_u5206_u949F_uFF09" class="headerlink" title="把一个毫秒数转化成时间字符串。格式为小时/分/秒/毫秒（如：24903600 –&gt; 06小时55分钟）"></a>把一个毫秒数转化成时间字符串。格式为小时/分/秒/毫秒（如：24903600 –&gt; 06小时55分钟）</h1><pre><code>/**
+     *
+     * @param millis
+     *            要转化的毫秒数。
+     * @param isWhole
+     *            是否强制全部显示小时/分。
+     * @param isFormat
+     *            时间数字是否要格式化，如果true：少位数前面补全；如果false：少位数前面不补全。
+     * @return 返回时间字符串：小时/分/秒/毫秒的格式（如：24903600 --&gt; 06小时55分钟）。
+     */
+    public static String millisToStringShort(long millis, boolean isWhole,
+            boolean isFormat) {
+        String h = &quot;&quot;;
+        String m = &quot;&quot;;
+        if (isWhole) {
+            h = isFormat ? &quot;00小时&quot; : &quot;0小时&quot;;
+            m = isFormat ? &quot;00分钟&quot; : &quot;0分钟&quot;;
+        }
+
+        long temp = millis;
+
+        long hper = 60 * 60 * 1000;
+        long mper = 60 * 1000;
+        long sper = 1000;
+
+        if (temp / hper &gt; 0) {
+            if (isFormat) {
+                h = temp / hper &lt; 10 ? &quot;0&quot; + temp / hper : temp / hper + &quot;&quot;;
+            } else {
+                h = temp / hper + &quot;&quot;;
+            }
+            h += &quot;小时&quot;;
+        }
+        temp = temp % hper;
+
+        if (temp / mper &gt; 0) {
+            if (isFormat) {
+                m = temp / mper &lt; 10 ? &quot;0&quot; + temp / mper : temp / mper + &quot;&quot;;
+            } else {
+                m = temp / mper + &quot;&quot;;
+            }
+            m += &quot;分钟&quot;;
+        }
+
+        return h + m;
+    }
+</code></pre><h1 id="u628A_u65E5_u671F_u6BEB_u79D2_u8F6C_u5316_u4E3A_u5B57_u7B26_u4E32"><a href="#u628A_u65E5_u671F_u6BEB_u79D2_u8F6C_u5316_u4E3A_u5B57_u7B26_u4E32" class="headerlink" title="把日期毫秒转化为字符串"></a>把日期毫秒转化为字符串</h1><pre><code>/**
+     * @param millis
+     *            要转化的日期毫秒数。
+     * @param pattern
+     *            要转化为的字符串格式（如：yyyy-MM-dd HH:mm:ss）。
+     * @return 返回日期字符串。
+     */
+    public static String millisToStringDate(long millis, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern,
+                Locale.getDefault());
+        return format.format(new Date(millis));
+    }
+</code></pre><h1 id="u628A_u65E5_u671F_u6BEB_u79D2_u8F6C_u5316_u4E3A_u5B57_u7B26_u4E32_uFF08_u6587_u4EF6_u540D_uFF09"><a href="#u628A_u65E5_u671F_u6BEB_u79D2_u8F6C_u5316_u4E3A_u5B57_u7B26_u4E32_uFF08_u6587_u4EF6_u540D_uFF09" class="headerlink" title="把日期毫秒转化为字符串（文件名）"></a>把日期毫秒转化为字符串（文件名）</h1><pre><code>/**
+     * @param millis
+     *            要转化的日期毫秒数。
+     * @param pattern
+     *            要转化为的字符串格式（如：yyyy-MM-dd HH:mm:ss）。
+     * @return 返回日期字符串（yyyy_MM_dd_HH_mm_ss）。
+     */
+    public static String millisToStringFilename(long millis, String pattern) {
+        String dateStr = millisToStringDate(millis, pattern);
+        return dateStr.replaceAll(&quot;[- :]&quot;, &quot;_&quot;);
+    }
+</code></pre><h1 id="u8F6C_u6362_u5F53_u524D_u65F6_u95F4_u4E3A_u6613_u7528_u65F6_u95F4_u683C_u5F0F"><a href="#u8F6C_u6362_u5F53_u524D_u65F6_u95F4_u4E3A_u6613_u7528_u65F6_u95F4_u683C_u5F0F" class="headerlink" title="转换当前时间为易用时间格式"></a>转换当前时间为易用时间格式</h1><p>1小时内用，多少分钟前； 超过1小时，显示时间而无日期； 如果是昨天，则显示昨天 超过昨天再显示日期； 超过1年再显示年。</p>
+<pre><code>public static long oneHourMillis = 60 * 60 * 1000; // 一小时的毫秒数
+public static long oneDayMillis = 24 * oneHourMillis; // 一天的毫秒数
+public static long oneYearMillis = 365 * oneDayMillis; // 一年的毫秒数
+
+public static String millisToLifeString(long millis) {
+        long now = System.currentTimeMillis();
+        long todayStart = string2Millis(millisToStringDate(now, &quot;yyyy-MM-dd&quot;),
+                &quot;yyyy-MM-dd&quot;);
+
+        // 一小时内
+        if (now - millis &lt;= oneHourMillis &amp;&amp; now - millis &gt; 0l) { 
+            String m = millisToStringShort(now - millis, false, false);
+            return &quot;&quot;.equals(m) ? &quot;1分钟内&quot; : m + &quot;前&quot;;
+        }
+
+         // 大于今天开始开始值，小于今天开始值加一天（即今天结束值）
+        if (millis &gt;= todayStart &amp;&amp; millis &lt;= oneDayMillis + todayStart) {
+            return &quot;今天 &quot; + millisToStringDate(millis, &quot;HH:mm&quot;);
+        }
+
+         // 大于（今天开始值减一天，即昨天开始值）
+        if (millis &gt; todayStart - oneDayMillis) {
+            return &quot;昨天 &quot; + millisToStringDate(millis, &quot;HH:mm&quot;);
+        }
+
+        long thisYearStart = string2Millis(millisToStringDate(now, &quot;yyyy&quot;),
+                &quot;yyyy&quot;);
+         // 大于今天小于今年
+        if (millis &gt; thisYearStart) {
+            return millisToStringDate(millis, &quot;MM月dd日 HH:mm&quot;);
+        }
+
+        return millisToStringDate(millis, &quot;yyyy年MM月dd日 HH:mm&quot;);
+    }
+</code></pre><h1 id="u5B57_u7B26_u4E32_u89E3_u6790_u6210_u6BEB_u79D2_u6570"><a href="#u5B57_u7B26_u4E32_u89E3_u6790_u6210_u6BEB_u79D2_u6570" class="headerlink" title="字符串解析成毫秒数"></a>字符串解析成毫秒数</h1><pre><code>public static long string2Millis(String str, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern,
+                Locale.getDefault());
+        long millis = 0;
+        try {
+            millis = format.parse(str).getTime();
+        } catch (ParseException e) {
+            Log.e(&quot;TAG&quot;, e.getMessage());
+        }
+        return millis;
+    }
+</code></pre><h1 id="u624B_u673A_u53F7_u7801_u6B63_u5219"><a href="#u624B_u673A_u53F7_u7801_u6B63_u5219" class="headerlink" title="手机号码正则"></a>手机号码正则</h1><pre><code>public static final String REG_PHONE_CHINA = &quot;^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$&quot;;
+</code></pre><h1 id="u90AE_u7BB1_u6B63_u5219"><a href="#u90AE_u7BB1_u6B63_u5219" class="headerlink" title="邮箱正则"></a>邮箱正则</h1><pre><code>public static final String REG_EMAIL = &quot;\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*&quot;;
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android代码/">Android代码</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-resume" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/29/resume/" class="article-date">
+  	<time datetime="2016-01-29T09:26:18.000Z" itemprop="datePublished">2016-01-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/29/resume/">resume</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="u8054_u7CFB_u65B9_u5F0F"><a href="#u8054_u7CFB_u65B9_u5F0F" class="headerlink" title="联系方式"></a>联系方式</h1><ul>
+<li><strong>手机：13061915502</strong></li>
+<li><strong>Email：fy247030881@gmail.com</strong></li>
+<li><strong>QQ/微信号：247030881</strong></li>
+</ul>
+<hr>
+<h1 id="u4E2A_u4EBA_u4FE1_u606F"><a href="#u4E2A_u4EBA_u4FE1_u606F" class="headerlink" title="个人信息"></a>个人信息</h1><ul>
+<li><strong>方远/男/1993</strong></li>
+<li><strong>本科/江西师范大学软件学院</strong></li>
+<li><strong>专业/软件工程</strong></li>
+<li><strong>证书/软件设计师(软考中级)</strong></li>
+<li><strong>工作年限：2年</strong></li>
+<li><strong>期望职位：Android 应用开发工程师</strong></li>
+<li><strong>期望薪资：税前月薪15k</strong></li>
+<li><strong>期望城市：上海</strong></li>
+<li><strong>技术博客：<a href="http://www.fangyuan.trade" target="_blank" rel="external">http://www.fangyuan.trade</a></strong></li>
+<li><strong>Github: <a href="https://github.com/KnightUK" target="_blank" rel="external">https://github.com/KnightUK</a></strong></li>
+</ul>
+<hr>
+<h1 id="u4E2A_u4EBA_u7ECF_u5386"><a href="#u4E2A_u4EBA_u7ECF_u5386" class="headerlink" title="个人经历"></a>个人经历</h1><ul>
+<li>2011年进入江西师范大学学习</li>
+<li>大二学习Java,开发了个人第一个APP–诗韵中国(<strong>百度应用可检索‘诗韵中国’</strong>)</li>
+<li>大三分入学院移动终端开发方向,参与江西师大教务在线手机端APP开发(腾讯应用宝可检索‘掌上师大’)</li>
+<li>大四与同学一起到上海，在宝付公司（张江高科）上班实习，参与宝付钱包开发工作</li>
+</ul>
+<hr>
+<h1 id="u5DE5_u4F5C_u7ECF_u5386"><a href="#u5DE5_u4F5C_u7ECF_u5386" class="headerlink" title="工作经历"></a>工作经历</h1><h2 id="u4E1C_u8F6F-_u4E2D_u901A_u670D__uFF08_2015_u5E748_u6708__7E_2016_u5E743_u6708__uFF09"><a href="#u4E1C_u8F6F-_u4E2D_u901A_u670D__uFF08_2015_u5E748_u6708__7E_2016_u5E743_u6708__uFF09" class="headerlink" title="东软-中通服 （ 2015年8月 ~ 2016年3月 ）"></a>东软-中通服 （ 2015年8月 ~ 2016年3月 ）</h2><p>中国通信服务公司电信业务外包项目<br><a href="http://101.231.80.220:8089/view/appview/apk.apk" target="_blank" rel="external">翼资源APP下载地址</a></p>
+<ul>
+<li><strong>简介</strong><br>中通服是专门为电信运营提供服务的公司，东软和中通服有合作。开发的APP叫翼资源，是提供给北方六省电信公司资源管理使用的，目前处于内部测试阶段。</li>
+<li><strong>项目技术情况</strong></li>
+</ul>
+<ol>
+<li>使用Android Studio开发商业化的项目，通过这半年的使用让我熟悉了新的IDE</li>
+<li>参与公司的需求制定，原型设计，服务器反馈json字符串定义，了解了业务和应用开发流程</li>
+<li>使用新的快速开发框架Kjframe</li>
+<li>使用了沉浸式状态栏</li>
+<li>尝试自定义View</li>
+</ol>
+<ul>
+<li><strong>项目分析</strong><br>在本项目中，我担任了移动端开发一职。刚参与到项目时，还是处于需求验证和原型设计阶段，经过半年的努力，我与另外一名Java工程师完成了项目计划书中安排的功能点，还超额完成了任务。通过这次开发，让我进一步拓展了Android开发的知识技能，同时也让我有更多的机会与Java大神沟通，加深我的Java知识。<br>以前总是说外包项目是最能锻炼人的，的确如此啊。这个项目不仅让我的专业技能有了进一步的提升，也让我了解了电信的业务知识。总之，收获还是很big。</li>
+</ul>
+<h2 id="u5B9D_u4ED8_u7F51_u7EDC_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2014_u5E7410_u6708__7E_2015_u5E747_u6708__uFF09"><a href="#u5B9D_u4ED8_u7F51_u7EDC_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2014_u5E7410_u6708__7E_2015_u5E747_u6708__uFF09" class="headerlink" title="宝付网络科技有限公司 （ 2014年10月 ~ 2015年7月 ）"></a>宝付网络科技有限公司 （ 2014年10月 ~ 2015年7月 ）</h2><h3 id="u5B9D_u4ED8_u94B1_u5305_u9879_u76EE"><a href="#u5B9D_u4ED8_u94B1_u5305_u9879_u76EE" class="headerlink" title="宝付钱包项目"></a>宝付钱包项目</h3><p><a href="http://www.baofoo.com/html/qianbao.html" target="_blank" rel="external">宝付钱包APP下载地址</a></p>
+<ul>
+<li><strong>简介</strong><br>宝付是一家有央行颁发的《支付业务许可证》第三方支付公司，而宝付钱包是一个类似于支付宝钱包的产品。</li>
+<li><strong>项目技术情况</strong></li>
+</ul>
+<ol>
+<li>splash界面</li>
+<li>广告图片轮播效果</li>
+<li>Activity+Fragment，webview及其他控件的使用</li>
+<li>大部分UI界面实现</li>
+<li>Json解析</li>
+</ol>
+<ul>
+<li><strong>项目分析</strong><br>看上去金融项目很高大上，其实它与其他应用的区别在于安全这一块，可能是因为实习的缘故，没有接触到网关支付这一部分，每碰到敏感数据都要做加密或者MD5校验。在加密这块我觉得自己还需要加强。</li>
+</ul>
+<hr>
+<h2 id="u6280_u672F_u80FD_u529B"><a href="#u6280_u672F_u80FD_u529B" class="headerlink" title="技术能力"></a>技术能力</h2><p><strong>热爱Android开发，了解Android平台开发的流程，平时喜欢浏览github上star和fork数多的开源项目，热衷于运用新的技术到项目中,有点UI控。</strong></p>
+<ul>
+<li>Android IDE: Android Studio/Eclipse/Android SDK</li>
+<li>Json Parse</li>
+<li>UI(沉浸式状态栏，Material Design), View(重写)</li>
+<li>百度地图SDK接入</li>
+<li>开发语言：Java</li>
+<li>原型设计：Axure</li>
+<li>数据库相关：SQLServer/SQLite</li>
+<li>版本管理工具：Svn/Git</li>
+<li>其他开放平台接入</li>
+<li>了解动态加载技术</li>
+<li>快速开发框架KJframe，xutil</li>
+</ul>
+<hr>
+<h1 id="u4E2A_u4EBA_u603B_u7ED3"><a href="#u4E2A_u4EBA_u603B_u7ED3" class="headerlink" title="个人总结"></a>个人总结</h1><p>目前为止，一直从事的都是Android开发工作，有技术追求和工作热情，目标是成为一名优秀的Android开发工程师。<br>工作负责，拥有较强的学习能力，沟通能力和团队协作能力，能够良好的和团队成员协同完成开发。</p>
+<h1 id="u81F4_u8C22"><a href="#u81F4_u8C22" class="headerlink" title="致谢"></a>致谢</h1><p>最后感谢您在百忙之中阅读我的简历，期待能有机会和您共事。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人/">个人</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-404" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/29/404/" class="article-date">
+  	<time datetime="2016-01-29T06:34:01.682Z" itemprop="datePublished">2016-01-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-hello" class="article article-type-post" itemscope itemprop="blogPost">
   
