@@ -4,21 +4,22 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>2016这些Android技术会很火 | FangYuan&#39;s Blog</title>
+  <title>Android处理崩溃的一些实践 | FangYuan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在Android开发中，新技术不断涌现。对于GitHub上如此众多的项目，有人不断Mark，有人分享自己的经验，不管怎么样，如果能让你真的有所学习有所收获，我们的目的也就达到了。
-1、DataBinding今年的 Google IO 大会上，Android 团队发布了一个数据绑定框架（Data Binding Library）。Data Binding Library 是一个 support 库，">
+  <meta name="description" content="Android处理崩溃的一些实践对于任何程序来说，崩溃都是一件很难避免的事情，当然Android程序也不例外。在Android程序中，引起崩溃的多属于运行时异常或者错误，对于这些异常我们很难做到类似Checked Exception那样显式捕获，因而最终导致了程序崩溃。本文讲介绍一些如何处理崩溃的实践，比如收集崩溃的stacktrace，甚至如何避免出现程序已停止的对话框。
+如何收集崩溃信息收集崩">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2016这些Android技术会很火">
-<meta property="og:url" content="http://www.baoxiang.org.cn/2016/01/30/2016这些Android技术会很火/index.html">
+<meta property="og:title" content="Android处理崩溃的一些实践">
+<meta property="og:url" content="http://www.baoxiang.org.cn/2016/02/13/Android处理崩溃的一些实践/index.html">
 <meta property="og:site_name" content="FangYuan's Blog">
-<meta property="og:description" content="在Android开发中，新技术不断涌现。对于GitHub上如此众多的项目，有人不断Mark，有人分享自己的经验，不管怎么样，如果能让你真的有所学习有所收获，我们的目的也就达到了。
-1、DataBinding今年的 Google IO 大会上，Android 团队发布了一个数据绑定框架（Data Binding Library）。Data Binding Library 是一个 support 库，">
-<meta property="og:updated_time" content="2016-01-30T12:57:35.170Z">
+<meta property="og:description" content="Android处理崩溃的一些实践对于任何程序来说，崩溃都是一件很难避免的事情，当然Android程序也不例外。在Android程序中，引起崩溃的多属于运行时异常或者错误，对于这些异常我们很难做到类似Checked Exception那样显式捕获，因而最终导致了程序崩溃。本文讲介绍一些如何处理崩溃的实践，比如收集崩溃的stacktrace，甚至如何避免出现程序已停止的对话框。
+如何收集崩溃信息收集崩">
+<meta property="og:image" content="http://www.baoxiang.org.cn/imgs/benkui.png">
+<meta property="og:updated_time" content="2016-02-13T15:22:42.823Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2016这些Android技术会很火">
-<meta name="twitter:description" content="在Android开发中，新技术不断涌现。对于GitHub上如此众多的项目，有人不断Mark，有人分享自己的经验，不管怎么样，如果能让你真的有所学习有所收获，我们的目的也就达到了。
-1、DataBinding今年的 Google IO 大会上，Android 团队发布了一个数据绑定框架（Data Binding Library）。Data Binding Library 是一个 support 库，">
+<meta name="twitter:title" content="Android处理崩溃的一些实践">
+<meta name="twitter:description" content="Android处理崩溃的一些实践对于任何程序来说，崩溃都是一件很难避免的事情，当然Android程序也不例外。在Android程序中，引起崩溃的多属于运行时异常或者错误，对于这些异常我们很难做到类似Checked Exception那样显式捕获，因而最终导致了程序崩溃。本文讲介绍一些如何处理崩溃的实践，比如收集崩溃的stacktrace，甚至如何避免出现程序已停止的对话框。
+如何收集崩溃信息收集崩">
   
     <link rel="alternative" href="/atom.xml" title="FangYuan&#39;s Blog" type="application/atom+xml">
   
@@ -245,11 +246,11 @@
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-2016这些Android技术会很火" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Android处理崩溃的一些实践" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/01/30/2016这些Android技术会很火/" class="article-date">
-  	<time datetime="2016-01-30T12:12:13.000Z" itemprop="datePublished">2016-01-30</time>
+      <a href="/2016/02/13/Android处理崩溃的一些实践/" class="article-date">
+  	<time datetime="2016-02-13T15:12:01.000Z" itemprop="datePublished">2016-02-13</time>
 </a>
     </div>
   
@@ -262,7 +263,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      2016这些Android技术会很火
+      Android处理崩溃的一些实践
     </h1>
   
 
@@ -271,7 +272,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android文章/">Android文章</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-article/">Android article</a></li></ul>
 	</div>
 
         
@@ -282,14 +283,62 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在Android开发中，新技术不断涌现。对于GitHub上如此众多的项目，有人不断Mark，有人分享自己的经验，不管怎么样，如果能让你真的有所学习有所收获，我们的目的也就达到了。</p>
-<h5 id="1_u3001DataBinding"><a href="#1_u3001DataBinding" class="headerlink" title="1、DataBinding"></a>1、DataBinding</h5><p>今年的 Google IO 大会上，Android 团队发布了一个数据绑定框架（Data Binding Library）。Data Binding Library 是一个 support 库，支持 Android 2.1+ 版本 (API level 7+)。<br>在2015年，它还是beta版本，但是就 Android Studio 2 的 Preview 版本发展来看，Google 在这个库上还是很花心思的，我们有理由相信，在2016年 DataBinding 将会迎来第一个正式版。</p>
-<h5 id="2_u3001MVP_u6A21_u5F0F"><a href="#2_u3001MVP_u6A21_u5F0F" class="headerlink" title="2、MVP模式"></a>2、MVP模式</h5><p>MVVM 与 MVP 模式，正在 Android 开发中越来越流行。在这里为大家强烈推荐我的：TheMVP 项目，可以直接引入项目作为 module 依赖。(详情请在 github 搜索 TheMVP )</p>
-<h5 id="3_u3001_u70ED_u4FEE_u590D"><a href="#3_u3001_u70ED_u4FEE_u590D" class="headerlink" title="3、热修复"></a>3、热修复</h5><p>在2015年，涌现出了一大批热修复动态加载技术：HotFix、Nuwa、DroidFix、AndFix 等等，以及同样原理的插件化技术：DroidPlugin、DynamicAPK。就连 Android  Studio 2 的 Preview 版本中体现的 Instant Run 功能，本质上也是一种热修复技术。<br>我猜想，在2016年一定会有基于 Instant Run 思想做出的热修复技术涌现。</p>
-<h5 id="4_u3001RxJava"><a href="#4_u3001RxJava" class="headerlink" title="4、RxJava"></a>4、RxJava</h5><p>优雅(也许仅体现在lambda表达式)的链式表达，轻松的线程切换，让 RxJava 在 2015 年已然得以如日中天。如果此时你还不了解 RxJava 究竟是什么的话，我建议你一定要仔细反思一下自己是否已与世界脱轨。</p>
-<h5 id="5_u3001RxVolley"><a href="#5_u3001RxVolley" class="headerlink" title="5、RxVolley"></a>5、RxVolley</h5><p>RxVolley，让 Volley 支持了 RxJava 后，让你的代码很轻松的脱离了回调地狱。同时移除掉了复杂的 HttpClient ，以及可选支持 OkHttp 与 ImageLoader，让你使用自己习惯编码风格的同时极大缩减了项目体积。 </p>
-<h5 id="6_u3001RxBus_u3001RxBinding"><a href="#6_u3001RxBus_u3001RxBinding" class="headerlink" title="6、RxBus、RxBinding"></a>6、RxBus、RxBinding</h5><p>得益于 RxJava 繁多的操作符与特性，结合此类基于 RxJava 的库，将使你的代码更加简洁，开发效率大大提高。<br>RxBus，值得一提的是 RxBus 并不是一个库，而是一种设计思维，它可以巧妙利用 RxJava 的特性，完美替换掉了原事件总线类库(EventBus/Otto等)<br>RxBinding，    RxJava 封装的 View 事件处理，事件的改变以流的形式进行传递。 </p>
-<h5 id="7_u3001Kotlin__u8BED_u8A00"><a href="#7_u3001Kotlin__u8BED_u8A00" class="headerlink" title="7、Kotlin 语言"></a>7、Kotlin 语言</h5><p>作为 Android 阵营的 Swift ，在2015年也迎来了它的正式版。Kotlin 拥有很多 Java 所不具备的特性， 比如空指针安全，函数默认参数，默认包含模板类，对 lambda 的原生支持(在 Android 开发中, 常常使用 RxKotlin )等特性。  </p>
+        <h1 id="Android_u5904_u7406_u5D29_u6E83_u7684_u4E00_u4E9B_u5B9E_u8DF5"><a href="#Android_u5904_u7406_u5D29_u6E83_u7684_u4E00_u4E9B_u5B9E_u8DF5" class="headerlink" title="Android处理崩溃的一些实践"></a>Android处理崩溃的一些实践</h1><p>对于任何程序来说，崩溃都是一件很难避免的事情，当然Android程序也不例外。在Android程序中，引起崩溃的多属于运行时异常或者错误，对于这些异常我们很难做到类似Checked Exception那样显式捕获，因而最终导致了程序崩溃。本文讲介绍一些如何处理崩溃的实践，比如收集崩溃的stacktrace，甚至如何避免出现程序已停止的对话框。</p>
+<h2 id="u5982_u4F55_u6536_u96C6_u5D29_u6E83_u4FE1_u606F"><a href="#u5982_u4F55_u6536_u96C6_u5D29_u6E83_u4FE1_u606F" class="headerlink" title="如何收集崩溃信息"></a>如何收集崩溃信息</h2><p>收集崩溃信息，可以更好的修复问题，增强程序的稳定性。Android中的崩溃收集沿用了Java的收集机制，实现起来比较简单。</p>
+<ol>
+<li>实现UncaughtExceptionHandler</li>
+</ol>
+<p>我们需要实现UncaughtExceptionHandler接口中的uncaughtException方法。该方法体中最常见的操作就是读取崩溃的stacktrace信息，然后上报到服务器数据便于开发者分析。实现代码如下：</p>
+<pre><code>public class SimpleUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+    private static final String LOGTAG = &quot;SimpleUncaughtExceptionHandler&quot;;
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+      //读取stacktrace信息
+        final Writer result = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(result);
+        ex.printStackTrace(printWriter);
+        String errorReport = result.toString();
+        Log.i(LOGTAG, &quot;uncaughtException errorReport=&quot; + errorReport);
+    }
+}
+</code></pre><p>除此之外，还建议携带以下信息发送到服务器，帮助更快定位和重现问题。</p>
+<p>设备唯一ID（基于IMEI或者Android ID等），方便根据用户提供的id，查找崩溃的stacktrace<br>设备语言与区域 方便重现<br>应用的版本号<br>设备的系统版本<br>设备类型，如平板，手机，TV等<br>崩溃发生的时间等<br>注册默认的异常处理</p>
+<p>注册默认的异常处理就是最后的一步，很简单，通常建议放在Application的onCreate方法中进行。</p>
+<p>public class DroidApplication extends Application {<br>    private static final String LOGTAG = “DroidApplication”;</p>
+<pre><code>@Override
+public void onCreate() {
+    super.onCreate();
+    Log.i(LOGTAG, &quot;onCreate&quot;);
+    Thread.setDefaultUncaughtExceptionHandler(new SimpleUncaughtExceptionHandler());
+}
+</code></pre><p>}</p>
+<p>验证</p>
+<p>当我们刻意触发一个NullPointerException时，过滤日志adb logcat | grep SimpleUncaughtExceptionHandler类似如下信息，则说明成功了。</p>
+<p>I/SimpleUncaughtExceptionHandler(22469): uncaughtException errorReport=java.lang.NullPointerException<br>I/SimpleUncaughtExceptionHandler(22469):  at com.droidyue.avoidforceclosedemo.MainActivity.causeNPE(MainActivity.java:22)<br>I/SimpleUncaughtExceptionHandler(22469):  at com.droidyue.avoidforceclosedemo.MainActivity.onClick(MainActivity.java:29)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.view.View.performClick(View.java:4470)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.view.View$PerformClick.run(View.java:18593)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.os.Handler.handleCallback(Handler.java:733)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.os.Handler.dispatchMessage(Handler.java:95)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.os.Looper.loop(Looper.java:157)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.app.ActivityThread.main(ActivityThread.java:5867)<br>I/SimpleUncaughtExceptionHandler(22469):  at java.lang.reflect.Method.invokeNative(Native Method)<br>I/SimpleUncaughtExceptionHandler(22469):  at java.lang.reflect.Method.invoke(Method.java:515)<br>I/SimpleUncaughtExceptionHandler(22469):  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:858)<br>I/SimpleUncaughtExceptionHandler(22469):  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:674)<br>I/SimpleUncaughtExceptionHandler(22469):  at dalvik.system.NativeStart.main(Native Method)</p>
+<h2 id="u4E0D_u51FA_u73B0_u5E94_u7528_u5D29_u6E83_u5BF9_u8BDD_u6846"><a href="#u4E0D_u51FA_u73B0_u5E94_u7528_u5D29_u6E83_u5BF9_u8BDD_u6846" class="headerlink" title="不出现应用崩溃对话框"></a>不出现应用崩溃对话框</h2><p>在Android崩溃的时候，我们都会看到类似这样的对话框</p>
+<p><img src="/imgs/benkui.png" alt="img1"></p>
+<p>然而，实际上有些情况下是不需要展示这个对话框的，一个常用的例子，我的程序中一个不太重要的推送服务采用了单独的进程，当这个进程崩溃时，实际上是可以允许不让用户感知的。</p>
+<p>如果我们采取主进程仍弹出对话框，其他进程不弹出的策略，那么我们的问题，可以总结成如下三个</p>
+<p>如何判断进程为主进程还是其他进程，或者某个进程<br>如何在某些进程不弹出应用崩溃对话框<br>如何在主进程弹出崩溃对话框<br>既然问题来了，我们就开动挖掘机深挖吧。</p>
+<p>进程判定</p>
+<p>进行进程判定也比较容易，首先我们需要获得进程名</p>
+<pre><code>public static String getProcessName(Context appContext) {
+    String currentProcessName = &quot;&quot;;
+    int pid = android.os.Process.myPid();
+    ActivityManager manager = (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
+    for (ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
+        if (processInfo.pid == pid) {
+            currentProcessName = processInfo.processName;
+            break;
+        }
+    }
+    return currentProcessName;
+}
+</code></pre><p>判断主进程，则对比进程名是否和包名相同即可</p>
+<p>mAppContext.getPackageName().equils(processName)</p>
+<p>判断为某个进程，在mainifest这样这样声明</p>
+<p><service android:name=".DroidService" android:process=":service"></service><br>其对应的完整进程名为com.droidyue.avoidforceclosedemo:service，我们判断可以使用如下代码<br>“com.droidyue.avoidforceclosedemo:service”.equals(processName)<br><a href="http://droidyue.com/blog/2015/12/06/practise-about-crash-in-android/" target="_blank" rel="external">更多请点击</a></p>
 
       
     </div>
@@ -299,18 +348,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/01/30/Android夜间模式最佳实践/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Android夜间模式最佳实践
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/30/36个Android开发常用代码片段/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">36个Android开发常用代码片段</div>
+    <a href="/2016/02/08/android博客汇总/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">android博客汇总</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -345,7 +385,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="2016这些Android技术会很火" data-title="2016这些Android技术会很火" data-url="http://www.baoxiang.org.cn/2016/01/30/2016这些Android技术会很火/"></div>
+	<div class="ds-thread" data-thread-key="Android处理崩溃的一些实践" data-title="Android处理崩溃的一些实践" data-url="http://www.baoxiang.org.cn/2016/02/13/Android处理崩溃的一些实践/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">

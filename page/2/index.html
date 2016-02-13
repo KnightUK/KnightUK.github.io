@@ -123,7 +123,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
+						<a href="/tags/Android-article/" style="font-size: 10px;">Android article</a> <a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
 					</div>
 				</section>
 				
@@ -242,6 +242,70 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-2016这些Android技术会很火" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/30/2016这些Android技术会很火/" class="article-date">
+  	<time datetime="2016-01-30T12:12:13.000Z" itemprop="datePublished">2016-01-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/30/2016这些Android技术会很火/">2016这些Android技术会很火</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Android开发中，新技术不断涌现。对于GitHub上如此众多的项目，有人不断Mark，有人分享自己的经验，不管怎么样，如果能让你真的有所学习有所收获，我们的目的也就达到了。</p>
+<h5 id="1_u3001DataBinding"><a href="#1_u3001DataBinding" class="headerlink" title="1、DataBinding"></a>1、DataBinding</h5><p>今年的 Google IO 大会上，Android 团队发布了一个数据绑定框架（Data Binding Library）。Data Binding Library 是一个 support 库，支持 Android 2.1+ 版本 (API level 7+)。<br>在2015年，它还是beta版本，但是就 Android Studio 2 的 Preview 版本发展来看，Google 在这个库上还是很花心思的，我们有理由相信，在2016年 DataBinding 将会迎来第一个正式版。</p>
+<h5 id="2_u3001MVP_u6A21_u5F0F"><a href="#2_u3001MVP_u6A21_u5F0F" class="headerlink" title="2、MVP模式"></a>2、MVP模式</h5><p>MVVM 与 MVP 模式，正在 Android 开发中越来越流行。在这里为大家强烈推荐我的：TheMVP 项目，可以直接引入项目作为 module 依赖。(详情请在 github 搜索 TheMVP )</p>
+<h5 id="3_u3001_u70ED_u4FEE_u590D"><a href="#3_u3001_u70ED_u4FEE_u590D" class="headerlink" title="3、热修复"></a>3、热修复</h5><p>在2015年，涌现出了一大批热修复动态加载技术：HotFix、Nuwa、DroidFix、AndFix 等等，以及同样原理的插件化技术：DroidPlugin、DynamicAPK。就连 Android  Studio 2 的 Preview 版本中体现的 Instant Run 功能，本质上也是一种热修复技术。<br>我猜想，在2016年一定会有基于 Instant Run 思想做出的热修复技术涌现。</p>
+<h5 id="4_u3001RxJava"><a href="#4_u3001RxJava" class="headerlink" title="4、RxJava"></a>4、RxJava</h5><p>优雅(也许仅体现在lambda表达式)的链式表达，轻松的线程切换，让 RxJava 在 2015 年已然得以如日中天。如果此时你还不了解 RxJava 究竟是什么的话，我建议你一定要仔细反思一下自己是否已与世界脱轨。</p>
+<h5 id="5_u3001RxVolley"><a href="#5_u3001RxVolley" class="headerlink" title="5、RxVolley"></a>5、RxVolley</h5><p>RxVolley，让 Volley 支持了 RxJava 后，让你的代码很轻松的脱离了回调地狱。同时移除掉了复杂的 HttpClient ，以及可选支持 OkHttp 与 ImageLoader，让你使用自己习惯编码风格的同时极大缩减了项目体积。 </p>
+<h5 id="6_u3001RxBus_u3001RxBinding"><a href="#6_u3001RxBus_u3001RxBinding" class="headerlink" title="6、RxBus、RxBinding"></a>6、RxBus、RxBinding</h5><p>得益于 RxJava 繁多的操作符与特性，结合此类基于 RxJava 的库，将使你的代码更加简洁，开发效率大大提高。<br>RxBus，值得一提的是 RxBus 并不是一个库，而是一种设计思维，它可以巧妙利用 RxJava 的特性，完美替换掉了原事件总线类库(EventBus/Otto等)<br>RxBinding，    RxJava 封装的 View 事件处理，事件的改变以流的形式进行传递。 </p>
+<h5 id="7_u3001Kotlin__u8BED_u8A00"><a href="#7_u3001Kotlin__u8BED_u8A00" class="headerlink" title="7、Kotlin 语言"></a>7、Kotlin 语言</h5><p>作为 Android 阵营的 Swift ，在2015年也迎来了它的正式版。Kotlin 拥有很多 Java 所不具备的特性， 比如空指针安全，函数默认参数，默认包含模板类，对 lambda 的原生支持(在 Android 开发中, 常常使用 RxKotlin )等特性。  </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android文章/">Android文章</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-36个Android开发常用代码片段" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -957,14 +1021,14 @@ public static String millisToLifeString(long millis) {
 <li><strong>项目技术情况</strong></li>
 </ul>
 <ol>
-<li>使用Android Studio开发商业化的项目，通过这半年的使用让我熟悉了新的IDE</li>
+<li>使用Android Studio开发商业化的项目，通过这半年多的时间让我熟悉了新的IDE</li>
 <li>参与公司的需求制定，原型设计，服务器反馈json字符串定义，了解了业务和应用开发流程</li>
 <li>使用新的快速开发框架Kjframe</li>
 <li>使用了沉浸式状态栏</li>
 <li>尝试自定义View</li>
 </ol>
 <ul>
-<li><strong>项目分析</strong><br>在本项目中，我担任了移动端开发一职。刚参与到项目时，还是处于需求验证和原型设计阶段，经过半年的努力，我与另外一名Java工程师完成了项目计划书中安排的功能点，还超额完成了任务。通过这次开发，让我进一步拓展了Android开发的知识技能，同时也让我有更多的机会与Java大神沟通，加深我的Java知识。<br>以前总是说外包项目是最能锻炼人的，的确如此啊。这个项目不仅让我的专业技能有了进一步的提升，也让我了解了电信的业务知识。总之，收获还是很big。</li>
+<li><strong>项目分析</strong><br>我在东软参与的是中国通信服务有限公司的项目，主要工作是负责北方六省的资源管理系统Android移动端APP—-翼资源APP的开发和协助原型设计的同事书写文档。开发环境为Android studio+Tomcat。前端资源管理系统包括根据用户输入的信息例如FTTH的查询功能，对ONU、OBD、GF、GJ、OLT等信息的录入、查询操作，百度地图接入与定位、地图路由线路自定义划线、坐标的录入、覆盖物与自定义功能，二维码扫描查询，消息公告管理、Sqlite数据库操作。参与了该项目的前期需求调研、项目的讨论、服务器反馈json数据格式的定义、Android客户端整体项目框架的架构，功能实现。目前该项目仍在开发与测试中。<br>这个项目不仅让我的专业技能有了进一步的提升，也让我了解了一些电信的业务知识。总之，收获还是很big。</li>
 </ul>
 <h2 id="u5B9D_u4ED8_u7F51_u7EDC_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2014_u5E7410_u6708__7E_2015_u5E747_u6708__uFF09"><a href="#u5B9D_u4ED8_u7F51_u7EDC_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2014_u5E7410_u6708__7E_2015_u5E747_u6708__uFF09" class="headerlink" title="宝付网络科技有限公司 （ 2014年10月 ~ 2015年7月 ）"></a>宝付网络科技有限公司 （ 2014年10月 ~ 2015年7月 ）</h2><h3 id="u5B9D_u4ED8_u94B1_u5305_u9879_u76EE"><a href="#u5B9D_u4ED8_u94B1_u5305_u9879_u76EE" class="headerlink" title="宝付钱包项目"></a>宝付钱包项目</h3><p><a href="http://www.baofoo.com/html/qianbao.html" target="_blank" rel="external">宝付钱包APP下载地址</a></p>
 <ul>
@@ -979,7 +1043,7 @@ public static String millisToLifeString(long millis) {
 <li>Json解析</li>
 </ol>
 <ul>
-<li><strong>项目分析</strong><br>看上去金融项目很高大上，其实它与其他应用的区别在于安全这一块，可能是因为实习的缘故，没有接触到网关支付这一部分，每碰到敏感数据都要做加密或者MD5校验。在加密这块我觉得自己还需要加强。</li>
+<li><strong>项目分析</strong><br>我在宝付主要负责宝付钱包模块功能的实现。其中主要参与了应用启动界面（splash界面），应用登录模块的实现并使用MD5做了数据的校验、手势密码锁屏与解锁（借鉴github上的开源项目）、广告图片轮播效果、应用中Activity+Fragment的使用，webview的请求并显示公司相关的优惠信息及其他xml中控件的使用。</li>
 </ul>
 <hr>
 <h2 id="u6280_u672F_u80FD_u529B"><a href="#u6280_u672F_u80FD_u529B" class="headerlink" title="技术能力"></a>技术能力</h2><p><strong>热爱Android开发，了解Android平台开发的流程，平时喜欢浏览github上star和fork数多的开源项目，热衷于运用新的技术到项目中,有点UI控。</strong></p>
