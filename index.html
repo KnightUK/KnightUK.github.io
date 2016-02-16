@@ -123,7 +123,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Android-article/" style="font-size: 10px;">Android article</a> <a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/android架构/" style="font-size: 10px;">android架构</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/tags/windows-command/" style="font-size: 10px;">windows command</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
+						<a href="/tags/Android-article/" style="font-size: 10px;">Android article</a> <a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/android-内存/" style="font-size: 10px;">android 内存</a> <a href="/tags/android架构/" style="font-size: 10px;">android架构</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/tags/windows-command/" style="font-size: 10px;">windows command</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
 					</div>
 				</section>
 				
@@ -242,6 +242,81 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Android内存泄漏研究" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/02/16/Android内存泄漏研究/" class="article-date">
+  	<time datetime="2016-02-16T03:27:25.000Z" itemprop="datePublished">2016-02-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/16/Android内存泄漏研究/">Android内存泄漏研究</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="u6982_u5FF5"><a href="#u6982_u5FF5" class="headerlink" title="概念"></a>概念</h1><h3 id="u6839_u641C_u7D22_u7B97_u6CD5"><a href="#u6839_u641C_u7D22_u7B97_u6CD5" class="headerlink" title="根搜索算法"></a>根搜索算法</h3><p>Android虚拟机的垃圾回收采用的是<code>根搜索算法</code>。GC会从根节点（GC Roots）开始对heap进行遍历。到最后，部分没有直接或者间接引用到GC Roots的就是需要回收的垃圾，会被GC回收掉。</p>
+<p>根搜索算法相比引用计数法很好的解决了循环引用的问题。举个例子，Activity有View的引用，View也有Activity的引用，之前我还尝试去源代码里找Activity何时和View断开连接是大错特错了。当Activity finish掉之后，Activity和View的循环引用已成孤岛，不再引用到GC Roots，无需断开也会被回收掉。</p>
+<h3 id="u5185_u5B58_u6CC4_u6F0F"><a href="#u5185_u5B58_u6CC4_u6F0F" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p><code>Android内存泄漏</code>指的是进程中某些对象（垃圾对象）已经没有使用价值了，但是它们却可以直接或间接地引用到gc roots导致无法被GC回收。无用的对象占据着内存空间，使得实际可使用内存变小，形象地说法就是内存泄漏了。</p>
+<h3 id="u573A_u666F"><a href="#u573A_u666F" class="headerlink" title="场景"></a>场景</h3><ul>
+<li>类的静态变量持有大数据对象<br>静态变量长期维持到大数据对象的引用，阻止垃圾回收。</li>
+<li>非静态内部类的静态实例<br>非静态内部类会维持一个到外部类实例的引用，如果非静态内部类的实例是静态的，就会间接长期维持着外部类的引用，阻止被回收掉。</li>
+<li>资源对象未关闭<br>资源性对象如Cursor、File、Socket，应该在使用后及时关闭。未在finally中关闭，会导致异常情况下资源对象未被释放的隐患。</li>
+<li>注册对象未反注册<br>未反注册会导致观察者列表里维持着对象的引用，阻止垃圾回收。</li>
+<li><code>Handler</code>临时性内存泄露<br>Handler通过发送Message与主线程交互，Message发出之后是存储在MessageQueue中的，有些Message也不是马上就被处理的。在Message中存在一个 target，是Handler的一个引用，如果Message在Queue中存在的时间越长，就会导致Handler无法被回收。如果Handler是非静态的，则会导致Activity或者Service不会被回收。<br>由于AsyncTask内部也是Handler机制，同样存在内存泄漏的风险。<br>此种内存泄露，一般是临时性的。<h2 id="u9884_u9632"><a href="#u9884_u9632" class="headerlink" title="预防"></a>预防</h2></li>
+<li>不要维持到Activity的长久引用，对activity的引用应该和activity本身有相同的生命周期。</li>
+<li>尽量使用context-application代替context-activity</li>
+<li>Activity中尽量不要使用非静态内部类，可以使用静态内部类和WeakReference代替。<h2 id="u68C0_u6D4B"><a href="#u68C0_u6D4B" class="headerlink" title="检测"></a>检测</h2><h3 id="u9759_u6001_u68C0_u6D4B"><a href="#u9759_u6001_u68C0_u6D4B" class="headerlink" title="静态检测"></a>静态检测</h3>静态检测主要是检测资源未关闭的情况，Eclipse和Android Studio都可以检测出IO或者Socket未关闭的情况，然后在finally中关闭即可。</li>
+</ul>
+<h3 id="u52A8_u6001_u76D1_u6D4B"><a href="#u52A8_u6001_u76D1_u6D4B" class="headerlink" title="动态监测"></a>动态监测</h3><p>动态检测主要是依靠<a href="https://eclipse.org/mat/" target="_blank" rel="external">MAT</a>这个工具。2011年Google IO有一个<a href="http://droidyue.com/blog/2014/11/02/note-for-google-io-memory-management-for-android-chinese-edition/" target="_blank" rel="external">主题演讲</a>，非常详细地讲解了内存泄露的检测，包含MAT工具的使用，值得一看。<br>我在某项目中使用MAT检测，发现一处内存泄漏，分享一下过程。<br>从首页到商户列表到商户详情再退回首页执行<code>Dump HPROF File</code>，查看MAT中的<code>Histogram</code>，过滤Activity后结果如下： Histogram<br><img src="/imgs/Histogram.png" alt="Histogram"></p>
+<p>仍然存在<code>ShopInfoActivity</code>的实例，选中右键点击<code>Merge Shortest Paths to GC Roots</code>，结果如下： Path<br><img src="/imgs/Path.png" alt="Path"></p>
+<p>可以看到<code>ShopDatabase</code>中维持着<code>ShopInfoActivity</code>的引用，查看源代码如下：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class ShopDatabase &#123;</span><br><span class="line">    …</span><br><span class="line">   <span class="keyword"> private</span><span class="keyword"> static</span> ShopDatabase instance;</span><br><span class="line">   <span class="keyword"> public</span><span class="keyword"> static</span> ShopDatabase<span class="function"> getInstance(</span>Context context<span class="function">)</span> &#123;</span><br><span class="line">       <span class="instruction"> if </span>(instance == null &amp;&amp; context != null<span class="function">)</span> &#123;</span><br><span class="line">           <span class="instruction"> instance </span>=<span class="instruction"> new </span>ShopDatabase(context<span class="function">)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       <span class="instruction"> return </span>instance;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword"> protected</span> Context context;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很明显，静态变量instance长期持有context的引用，造成内存泄露。<br>所以动态检测内存泄露的一个简单思路就是随意操作APP，最后返回首页，然后用MAT检测，查看是否存在Activity多于一个或者Activity不正常存在的问题。</p>
+<h2 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://android-developers.blogspot.com/2009/01/avoiding-memory-leaks.html" target="_blank" rel="external">Avoiding memory leaks</a><br><a href="http://android-developers.blogspot.com/2011/03/memory-analysis-for-android.html" target="_blank" rel="external">Memory Analysis for Android Applications</a><br><a href="http://dubroy.com/memory_management_for_android_apps.pdf" target="_blank" rel="external">memory_management_for_android_apps</a><br><a href="http://droidyue.com/blog/2014/11/02/note-for-google-io-memory-management-for-android-chinese-edition/" target="_blank" rel="external">Google IO：Android内存管理主题演讲记录</a><br><a href="http://blog.csdn.net/gemmem/article/details/13017999" target="_blank" rel="external">Android内存泄漏分析及调试</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-内存/">android 内存</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="android-Android mvc or mvp架构" class="article article-type-android" itemscope itemprop="blogPost">
   
@@ -514,359 +589,6 @@ public void onCreate() {
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-article/">Android article</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-android博客汇总" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/08/android博客汇总/" class="article-date">
-  	<time datetime="2016-02-08T14:28:27.000Z" itemprop="datePublished">2016-02-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/08/android博客汇总/">android博客汇总</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Android_u5F00_u53D1_u8005_u535A_u5BA2_u6C47_u603B"><a href="#Android_u5F00_u53D1_u8005_u535A_u5BA2_u6C47_u603B" class="headerlink" title="Android开发者博客汇总"></a>Android开发者博客汇总</h1><h2 id="Android__u6280_u672F_u7C7B_u535A_u5BA2"><a href="#Android__u6280_u672F_u7C7B_u535A_u5BA2" class="headerlink" title="Android 技术类博客"></a>Android 技术类博客</h2><h3 id="AigeStudio"><a href="#AigeStudio" class="headerlink" title="AigeStudio"></a>AigeStudio</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/aigestudio" target="_blank" rel="external">http://blog.csdn.net/aigestudio</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/aigestudio/rss/list" target="_blank" rel="external">http://blog.csdn.net/aigestudio/rss/list</a></li>
-</ul>
-<h3 id="Android_Central"><a href="#Android_Central" class="headerlink" title="Android Central"></a>Android Central</h3><ul>
-<li>博客地址: <a href="http://www.androidcentral.com/" target="_blank" rel="external">http://www.androidcentral.com/</a></li>
-<li>订阅地址: <a href="http://www.androidcentral.com/feed" target="_blank" rel="external">http://www.androidcentral.com/feed</a></li>
-</ul>
-<h3 id="Android_Cool_Posts"><a href="#Android_Cool_Posts" class="headerlink" title="Android Cool Posts"></a>Android Cool Posts</h3><ul>
-<li>博客地址: <a href="https://greenrobot.me" target="_blank" rel="external">https://greenrobot.me</a></li>
-<li>订阅地址: <a href="https://greenrobot.me/feed/" target="_blank" rel="external">https://greenrobot.me/feed/</a></li>
-</ul>
-<h3 id="Android_Developers_Blog"><a href="#Android_Developers_Blog" class="headerlink" title="Android Developers Blog"></a>Android Developers Blog</h3><ul>
-<li>博客地址: <a href="http://android-developers.blogspot.com/" target="_blank" rel="external">http://android-developers.blogspot.com/</a></li>
-<li>订阅地址: <a href="http://android-developers.blogspot.com/feeds/posts/default?alt=rss" target="_blank" rel="external">http://android-developers.blogspot.com/feeds/posts/default?alt=rss</a></li>
-</ul>
-<h3 id="Android_u5F00_u53D1_u6280_u672F_u5468_u62A5"><a href="#Android_u5F00_u53D1_u6280_u672F_u5468_u62A5" class="headerlink" title="Android开发技术周报"></a>Android开发技术周报</h3><ul>
-<li>博客地址: <a href="http://www.androidweekly.cn/" target="_blank" rel="external">http://www.androidweekly.cn/</a></li>
-<li>订阅地址: <a href="http://www.androidweekly.cn/rss/" target="_blank" rel="external">http://www.androidweekly.cn/rss/</a></li>
-</ul>
-<h3 id="Antonio_Leiva"><a href="#Antonio_Leiva" class="headerlink" title="Antonio Leiva"></a>Antonio Leiva</h3><ul>
-<li>博客地址: <a href="http://antonioleiva.com" target="_blank" rel="external">http://antonioleiva.com</a></li>
-<li>订阅地址: <a href="http://antonioleiva.com/feed/" target="_blank" rel="external">http://antonioleiva.com/feed/</a></li>
-</ul>
-<h3 id="ASCE1885"><a href="#ASCE1885" class="headerlink" title="ASCE1885"></a>ASCE1885</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/ace1985" target="_blank" rel="external">http://blog.csdn.net/ace1985</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/asce1885/rss/list" target="_blank" rel="external">http://blog.csdn.net/asce1885/rss/list</a></li>
-</ul>
-<h3 id="Baoyz_u2019s_Blog"><a href="#Baoyz_u2019s_Blog" class="headerlink" title="Baoyz’s Blog"></a>Baoyz’s Blog</h3><ul>
-<li>博客地址: <a href="http://www.baoyz.com/" target="_blank" rel="external">http://www.baoyz.com/</a></li>
-<li>订阅地址: <a href="http://baoyz.com/rss.xml" target="_blank" rel="external">http://baoyz.com/rss.xml</a></li>
-</ul>
-<h3 id="Beyond0525_u7684_u4E13_u680F"><a href="#Beyond0525_u7684_u4E13_u680F" class="headerlink" title="Beyond0525的专栏"></a>Beyond0525的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/beyond0525" target="_blank" rel="external">http://blog.csdn.net/beyond0525</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/beyond0525/rss/list" target="_blank" rel="external">http://blog.csdn.net/beyond0525/rss/list</a></li>
-</ul>
-<h3 id="Chiemy_Feed__28http_3A//chiemy-com/feed-xml_29"><a href="#Chiemy_Feed__28http_3A//chiemy-com/feed-xml_29" class="headerlink" title="Chiemy Feed (http://chiemy.com/feed.xml)"></a>Chiemy Feed (<a href="http://chiemy.com/feed.xml" target="_blank" rel="external">http://chiemy.com/feed.xml</a>)</h3><ul>
-<li>博客地址: <a href="/null">null</a></li>
-<li>订阅地址: <a href="http://chiemy.com/feed.xml" target="_blank" rel="external">http://chiemy.com/feed.xml</a></li>
-</ul>
-<h3 id="coder-pig_u7684_u732A_u680F"><a href="#coder-pig_u7684_u732A_u680F" class="headerlink" title="coder-pig的猪栏"></a>coder-pig的猪栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/zpj779878443" target="_blank" rel="external">http://blog.csdn.net/zpj779878443</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/coder_pig/rss/list" target="_blank" rel="external">http://blog.csdn.net/coder_pig/rss/list</a></li>
-</ul>
-<h3 id="Cyril_Mottier"><a href="#Cyril_Mottier" class="headerlink" title="Cyril Mottier"></a>Cyril Mottier</h3><ul>
-<li>博客地址: <a href="http://cyrilmottier.com/" target="_blank" rel="external">http://cyrilmottier.com/</a></li>
-<li>订阅地址: <a href="http://cyrilmottier.com/atom.xml" target="_blank" rel="external">http://cyrilmottier.com/atom.xml</a></li>
-</ul>
-<h3 id="Dan_Lew_Codes"><a href="#Dan_Lew_Codes" class="headerlink" title="Dan Lew Codes"></a>Dan Lew Codes</h3><ul>
-<li>博客地址: <a href="http://blog.danlew.net/" target="_blank" rel="external">http://blog.danlew.net/</a></li>
-<li>订阅地址: <a href="http://blog.danlew.net/rss/" target="_blank" rel="external">http://blog.danlew.net/rss/</a></li>
-</ul>
-<h3 id="Drakeet_u7684_u4E2A_u4EBA_u535A_u5BA2"><a href="#Drakeet_u7684_u4E2A_u4EBA_u535A_u5BA2" class="headerlink" title="Drakeet的个人博客"></a>Drakeet的个人博客</h3><ul>
-<li>博客地址: <a href="http://drakeet.me" target="_blank" rel="external">http://drakeet.me</a></li>
-<li>订阅地址: <a href="http://drakeet.me/feed" target="_blank" rel="external">http://drakeet.me/feed</a></li>
-</ul>
-<h3 id="DroidSec-cn"><a href="#DroidSec-cn" class="headerlink" title="DroidSec.cn"></a>DroidSec.cn</h3><ul>
-<li>博客地址: <a href="http://www.droidsec.cn" target="_blank" rel="external">http://www.droidsec.cn</a></li>
-<li>订阅地址: <a href="http://home.droidsec.cn/feed/" target="_blank" rel="external">http://home.droidsec.cn/feed/</a></li>
-</ul>
-<h3 id="hellogv_u7684_u4E13_u680F"><a href="#hellogv_u7684_u4E13_u680F" class="headerlink" title="hellogv的专栏"></a>hellogv的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/hellogv" target="_blank" rel="external">http://blog.csdn.net/hellogv</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/hellogv/rss/list" target="_blank" rel="external">http://blog.csdn.net/hellogv/rss/list</a></li>
-</ul>
-<h3 id="Hongyang"><a href="#Hongyang" class="headerlink" title="Hongyang"></a>Hongyang</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/lmj623565791" target="_blank" rel="external">http://blog.csdn.net/lmj623565791</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/lmj623565791/rss/list" target="_blank" rel="external">http://blog.csdn.net/lmj623565791/rss/list</a></li>
-</ul>
-<h3 id="Innost_u7684_u4E13_u680F"><a href="#Innost_u7684_u4E13_u680F" class="headerlink" title="Innost的专栏"></a>Innost的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/innost" target="_blank" rel="external">http://blog.csdn.net/innost</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/Innost/rss/list" target="_blank" rel="external">http://blog.csdn.net/Innost/rss/list</a></li>
-</ul>
-<h3 id="Jhuster_u7684_u4E13_u680F-51CTO_u6280_u672F_u535A_u5BA2"><a href="#Jhuster_u7684_u4E13_u680F-51CTO_u6280_u672F_u535A_u5BA2" class="headerlink" title="Jhuster的专栏-51CTO技术博客"></a>Jhuster的专栏-51CTO技术博客</h3><ul>
-<li>博客地址: <a href="http://ticktick.blog.51cto.com" target="_blank" rel="external">http://ticktick.blog.51cto.com</a></li>
-<li>订阅地址: <a href="http://ticktick.blog.51cto.com/rss.php?uid=823160" target="_blank" rel="external">http://ticktick.blog.51cto.com/rss.php?uid=823160</a></li>
-</ul>
-<h3 id="Jlog"><a href="#Jlog" class="headerlink" title="Jlog"></a>Jlog</h3><ul>
-<li>博客地址: <a href="http://www.race604.com/" target="_blank" rel="external">http://www.race604.com/</a></li>
-<li>订阅地址: <a href="http://www.race604.com/rss/" target="_blank" rel="external">http://www.race604.com/rss/</a></li>
-</ul>
-<h3 id="Keegan_u5C0F_u94A2"><a href="#Keegan_u5C0F_u94A2" class="headerlink" title="Keegan小钢"></a>Keegan小钢</h3><ul>
-<li>博客地址: <a href="http://keeganlee.me/" target="_blank" rel="external">http://keeganlee.me/</a></li>
-<li>订阅地址: <a href="http://keeganlee.me/feed" target="_blank" rel="external">http://keeganlee.me/feed</a></li>
-</ul>
-<h3 id="liaohuqiu-net"><a href="#liaohuqiu-net" class="headerlink" title="liaohuqiu.net"></a>liaohuqiu.net</h3><ul>
-<li>博客地址: <a href="http://liaohuqiu.net/" target="_blank" rel="external">http://liaohuqiu.net/</a></li>
-<li>订阅地址: <a href="http://www.liaohuqiu.net/rss.xml" target="_blank" rel="external">http://www.liaohuqiu.net/rss.xml</a></li>
-</ul>
-<h3 id="lightSky_u2018Blog"><a href="#lightSky_u2018Blog" class="headerlink" title="lightSky‘Blog"></a>lightSky‘Blog</h3><ul>
-<li>博客地址: <a href="http://www.lightskystreet.com//" target="_blank" rel="external">http://www.lightskystreet.com//</a></li>
-<li>订阅地址: <a href="http://www.lightskystreet.com/atom.xml" target="_blank" rel="external">http://www.lightskystreet.com/atom.xml</a></li>
-</ul>
-<h3 id="Liter_u2019s_Blog"><a href="#Liter_u2019s_Blog" class="headerlink" title="Liter’s Blog"></a>Liter’s Blog</h3><ul>
-<li>博客地址: <a href="http://www.vmatianyu.cn" target="_blank" rel="external">http://www.vmatianyu.cn</a></li>
-<li>订阅地址: <a href="http://www.vmatianyu.cn/feed" target="_blank" rel="external">http://www.vmatianyu.cn/feed</a></li>
-</ul>
-<h3 id="Loader_u2019s_Blog"><a href="#Loader_u2019s_Blog" class="headerlink" title="Loader’s Blog"></a>Loader’s Blog</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/qibin0506" target="_blank" rel="external">http://blog.csdn.net/qibin0506</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/qibin0506/rss/list" target="_blank" rel="external">http://blog.csdn.net/qibin0506/rss/list</a></li>
-</ul>
-<h3 id="Lusfold"><a href="#Lusfold" class="headerlink" title="Lusfold"></a>Lusfold</h3><ul>
-<li>博客地址: <a href="http://lusfold.com//" target="_blank" rel="external">http://lusfold.com//</a></li>
-<li>订阅地址: <a href="http://lusfold.com/atom.xml" target="_blank" rel="external">http://lusfold.com/atom.xml</a></li>
-</ul>
-<h3 id="Mobile_Internet_developer"><a href="#Mobile_Internet_developer" class="headerlink" title="Mobile Internet developer"></a>Mobile Internet developer</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/xiaanming" target="_blank" rel="external">http://blog.csdn.net/xiaanming</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/xiaanming/rss/list" target="_blank" rel="external">http://blog.csdn.net/xiaanming/rss/list</a></li>
-</ul>
-<h3 id="Mr-Simple_u7684_u4E13_u680F"><a href="#Mr-Simple_u7684_u4E13_u680F" class="headerlink" title="Mr.Simple的专栏"></a>Mr.Simple的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/bboyfeiyu" target="_blank" rel="external">http://blog.csdn.net/bboyfeiyu</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/bboyfeiyu/rss/list" target="_blank" rel="external">http://blog.csdn.net/bboyfeiyu/rss/list</a></li>
-</ul>
-<h3 id="Official_Android_Blog"><a href="#Official_Android_Blog" class="headerlink" title="Official Android Blog"></a>Official Android Blog</h3><ul>
-<li>博客地址: <a href="http://officialandroid.blogspot.com/" target="_blank" rel="external">http://officialandroid.blogspot.com/</a></li>
-<li>订阅地址: <a href="http://officialandroid.blogspot.com/feeds/posts/default?alt=rss" target="_blank" rel="external">http://officialandroid.blogspot.com/feeds/posts/default?alt=rss</a></li>
-</ul>
-<h3 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h3><ul>
-<li>博客地址: <a href="http://androidperformance.com/" target="_blank" rel="external">http://androidperformance.com/</a></li>
-<li>订阅地址: <a href="http://androidperformance.com/atom.xml" target="_blank" rel="external">http://androidperformance.com/atom.xml</a></li>
-</ul>
-<h3 id="qinjuning_u3001lets_go"><a href="#qinjuning_u3001lets_go" class="headerlink" title="qinjuning、lets go"></a>qinjuning、lets go</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/qinjuning" target="_blank" rel="external">http://blog.csdn.net/qinjuning</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/qinjuning/rss/list" target="_blank" rel="external">http://blog.csdn.net/qinjuning/rss/list</a></li>
-</ul>
-<h3 id="Rocko_u2019s_blog"><a href="#Rocko_u2019s_blog" class="headerlink" title="Rocko’s blog"></a>Rocko’s blog</h3><ul>
-<li>博客地址: <a href="http://rocko.xyz//" target="_blank" rel="external">http://rocko.xyz//</a></li>
-<li>订阅地址: <a href="http://rocko.xyz/atom.xml" target="_blank" rel="external">http://rocko.xyz/atom.xml</a></li>
-</ul>
-<h3 id="Snow_Memory"><a href="#Snow_Memory" class="headerlink" title="Snow Memory"></a>Snow Memory</h3><ul>
-<li>博客地址: <a href="http://andrewliu.in/" target="_blank" rel="external">http://andrewliu.in/</a></li>
-<li>订阅地址: <a href="http://andrewliu.in/atom.xml" target="_blank" rel="external">http://andrewliu.in/atom.xml</a></li>
-</ul>
-<h3 id="StackVoid"><a href="#StackVoid" class="headerlink" title="StackVoid"></a>StackVoid</h3><ul>
-<li>博客地址: <a href="http://stackvoid.com" target="_blank" rel="external">http://stackvoid.com</a></li>
-<li>订阅地址: <a href="http://stackvoid.com/feed/" target="_blank" rel="external">http://stackvoid.com/feed/</a></li>
-</ul>
-<h3 id="Styling_Android"><a href="#Styling_Android" class="headerlink" title="Styling Android"></a>Styling Android</h3><ul>
-<li>博客地址: <a href="https://blog.stylingandroid.com" target="_blank" rel="external">https://blog.stylingandroid.com</a></li>
-<li>订阅地址: <a href="http://feeds.feedburner.com/StylingAndroid" target="_blank" rel="external">http://feeds.feedburner.com/StylingAndroid</a></li>
-</ul>
-<h3 id="The_Cheese_Factory_u2019s_Blog__28English_29"><a href="#The_Cheese_Factory_u2019s_Blog__28English_29" class="headerlink" title="The Cheese Factory’s Blog (English)"></a>The Cheese Factory’s Blog (English)</h3><ul>
-<li>博客地址: <a href="http://inthecheesefactory.com/blog/en" target="_blank" rel="external">http://inthecheesefactory.com/blog/en</a></li>
-<li>订阅地址: <a href="http://inthecheesefactory.com/blog/en/rss.xml" target="_blank" rel="external">http://inthecheesefactory.com/blog/en/rss.xml</a></li>
-</ul>
-<h3 id="Tricky_Android"><a href="#Tricky_Android" class="headerlink" title="Tricky Android"></a>Tricky Android</h3><ul>
-<li>博客地址: <a href="http://trickyandroid.com/" target="_blank" rel="external">http://trickyandroid.com/</a></li>
-<li>订阅地址: <a href="http://trickyandroid.com/rss/" target="_blank" rel="external">http://trickyandroid.com/rss/</a></li>
-</ul>
-<h3 id="Trinea"><a href="#Trinea" class="headerlink" title="Trinea"></a>Trinea</h3><ul>
-<li>博客地址: <a href="http://www.trinea.cn" target="_blank" rel="external">http://www.trinea.cn</a></li>
-<li>订阅地址: <a href="http://www.trinea.cn/feed/" target="_blank" rel="external">http://www.trinea.cn/feed/</a></li>
-</ul>
-<h3 id="Veaer"><a href="#Veaer" class="headerlink" title="Veaer"></a>Veaer</h3><ul>
-<li>博客地址: <a href="http://veaer.com/" target="_blank" rel="external">http://veaer.com/</a></li>
-<li>订阅地址: <a href="http://veaer.com/atom.xml" target="_blank" rel="external">http://veaer.com/atom.xml</a></li>
-</ul>
-<h3 id="Waylenw_u2019s_BLog"><a href="#Waylenw_u2019s_BLog" class="headerlink" title="Waylenw’s BLog"></a>Waylenw’s BLog</h3><ul>
-<li>博客地址: <a href="http://waylenw.github.io/" target="_blank" rel="external">http://waylenw.github.io/</a></li>
-<li>订阅地址: <a href="http://waylenw.github.io/atom.xml" target="_blank" rel="external">http://waylenw.github.io/atom.xml</a></li>
-</ul>
-<h3 id="u4E91_u98CE_u7684_BLOG"><a href="#u4E91_u98CE_u7684_BLOG" class="headerlink" title="云风的 BLOG"></a>云风的 BLOG</h3><ul>
-<li>博客地址: <a href="http://blog.codingnow.com/" target="_blank" rel="external">http://blog.codingnow.com/</a></li>
-<li>订阅地址: <a href="http://blog.codingnow.com/atom.xml" target="_blank" rel="external">http://blog.codingnow.com/atom.xml</a></li>
-</ul>
-<h3 id="u4EFB_u7389_u521A"><a href="#u4EFB_u7389_u521A" class="headerlink" title="任玉刚"></a>任玉刚</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/singwhatiwanna" target="_blank" rel="external">http://blog.csdn.net/singwhatiwanna</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/singwhatiwanna/rss/list" target="_blank" rel="external">http://blog.csdn.net/singwhatiwanna/rss/list</a></li>
-</ul>
-<h3 id="u505A_u597D_u73B0_u5728_u7684_u4E8B_u513F"><a href="#u505A_u597D_u73B0_u5728_u7684_u4E8B_u513F" class="headerlink" title="做好现在的事儿"></a>做好现在的事儿</h3><ul>
-<li>博客地址: <a href="http://stormzhang.com" target="_blank" rel="external">http://stormzhang.com</a></li>
-<li>订阅地址: <a href="http://stormzhang.com/rss.xml" target="_blank" rel="external">http://stormzhang.com/rss.xml</a></li>
-</ul>
-<h3 id="u5170_u4EAD_u98CE_u96E8_u7684_u4E13_u680F"><a href="#u5170_u4EAD_u98CE_u96E8_u7684_u4E13_u680F" class="headerlink" title="兰亭风雨的专栏"></a>兰亭风雨的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/mmc_maodun" target="_blank" rel="external">http://blog.csdn.net/mmc_maodun</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/ns_code/rss/list" target="_blank" rel="external">http://blog.csdn.net/ns_code/rss/list</a></li>
-</ul>
-<h3 id="u535A_u5BA2_u56ED__u52AA_u529B_u5427"><a href="#u535A_u5BA2_u56ED__u52AA_u529B_u5427" class="headerlink" title="博客园_努力吧"></a>博客园_努力吧</h3><ul>
-<li>博客地址: <a href="/null">null</a></li>
-<li>订阅地址: <a href="http://feed.cnblogs.com/blog/u/71288/rss" target="_blank" rel="external">http://feed.cnblogs.com/blog/u/71288/rss</a></li>
-</ul>
-<h3 id="u5B50_u52F0_u7684_u535A_u5BA2"><a href="#u5B50_u52F0_u7684_u535A_u5BA2" class="headerlink" title="子勰的博客"></a>子勰的博客</h3><ul>
-<li>博客地址: <a href="http://blog.bihe0832.com" target="_blank" rel="external">http://blog.bihe0832.com</a></li>
-<li>订阅地址: <a href="http://blog.bihe0832.com/pages/atom.xml" target="_blank" rel="external">http://blog.bihe0832.com/pages/atom.xml</a></li>
-</ul>
-<h3 id="u5B89_u5353_u5F1F_u7684_u4E13_u680F"><a href="#u5B89_u5353_u5F1F_u7684_u4E13_u680F" class="headerlink" title="安卓弟的专栏"></a>安卓弟的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/sbsujjbcy" target="_blank" rel="external">http://blog.csdn.net/sbsujjbcy</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/sbsujjbcy/rss/list" target="_blank" rel="external">http://blog.csdn.net/sbsujjbcy/rss/list</a></li>
-</ul>
-<h3 id="u5DE5_u5320_u82E5_u6C34"><a href="#u5DE5_u5320_u82E5_u6C34" class="headerlink" title="工匠若水"></a>工匠若水</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/yanbober" target="_blank" rel="external">http://blog.csdn.net/yanbober</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/yanbober/rss/list" target="_blank" rel="external">http://blog.csdn.net/yanbober/rss/list</a></li>
-</ul>
-<h3 id="u5F00_u53D1_u6280_u672F_u524D_u7EBF"><a href="#u5F00_u53D1_u6280_u672F_u524D_u7EBF" class="headerlink" title="开发技术前线"></a>开发技术前线</h3><ul>
-<li>博客地址: <a href="http://www.devtf.cn" target="_blank" rel="external">http://www.devtf.cn</a></li>
-<li>订阅地址: <a href="http://www.devtf.cn/?feed=rss2" target="_blank" rel="external">http://www.devtf.cn/?feed=rss2</a></li>
-</ul>
-<h3 id="u5F00_u6E90_u5B9E_u9A8C_u5BA4"><a href="#u5F00_u6E90_u5B9E_u9A8C_u5BA4" class="headerlink" title="开源实验室"></a>开源实验室</h3><ul>
-<li>博客地址: <a href="http://www.kymjs.com/" target="_blank" rel="external">http://www.kymjs.com/</a></li>
-<li>订阅地址: <a href="http://kymjs.com/feed.xml" target="_blank" rel="external">http://kymjs.com/feed.xml</a></li>
-</ul>
-<h3 id="u5F20_u5174_u4E1A_u7684_u535A_u5BA2"><a href="#u5F20_u5174_u4E1A_u7684_u535A_u5BA2" class="headerlink" title="张兴业的博客"></a>张兴业的博客</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/xyz_lmn" target="_blank" rel="external">http://blog.csdn.net/xyz_lmn</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/xyz_lmn/rss/list" target="_blank" rel="external">http://blog.csdn.net/xyz_lmn/rss/list</a></li>
-</ul>
-<h3 id="u5F20_u660E_u4E91_u7684_u535A_u5BA2"><a href="#u5F20_u660E_u4E91_u7684_u535A_u5BA2" class="headerlink" title="张明云的博客"></a>张明云的博客</h3><ul>
-<li>博客地址: <a href="http://zmywly8866.github.io" target="_blank" rel="external">http://zmywly8866.github.io</a></li>
-<li>订阅地址: <a href="http://zmywly8866.github.io/pages/atom.xml" target="_blank" rel="external">http://zmywly8866.github.io/pages/atom.xml</a></li>
-</ul>
-<h3 id="u5FEB_u4E50de_u80D6_u864E"><a href="#u5FEB_u4E50de_u80D6_u864E" class="headerlink" title="快乐de胖虎"></a>快乐de胖虎</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/u011133213" target="_blank" rel="external">http://blog.csdn.net/u011133213</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/u011133213/rss/list" target="_blank" rel="external">http://blog.csdn.net/u011133213/rss/list</a></li>
-</ul>
-<h3 id="u61D2_u4EBA_u7684_u6280_u672F_u7B14_u8BB0"><a href="#u61D2_u4EBA_u7684_u6280_u672F_u7B14_u8BB0" class="headerlink" title="懒人的技术笔记"></a>懒人的技术笔记</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/lincyang" target="_blank" rel="external">http://blog.csdn.net/lincyang</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/lincyang/rss/list" target="_blank" rel="external">http://blog.csdn.net/lincyang/rss/list</a></li>
-</ul>
-<h3 id="u6280_u672F_u5C0F_u9ED1_u5C4B"><a href="#u6280_u672F_u5C0F_u9ED1_u5C4B" class="headerlink" title="技术小黑屋"></a>技术小黑屋</h3><ul>
-<li>博客地址: <a href="http://droidyue.com/" target="_blank" rel="external">http://droidyue.com/</a></li>
-<li>订阅地址: <a href="http://droidyue.com/atom.xml" target="_blank" rel="external">http://droidyue.com/atom.xml</a></li>
-</ul>
-<h3 id="u660E_u955C_u672C_u6E05_u51C0"><a href="#u660E_u955C_u672C_u6E05_u51C0" class="headerlink" title="明镜本清净"></a>明镜本清净</h3><ul>
-<li>博客地址: <a href="http://yoursite.com/" target="_blank" rel="external">http://yoursite.com/</a></li>
-<li>订阅地址: <a href="http://anany.me/atom.xml" target="_blank" rel="external">http://anany.me/atom.xml</a></li>
-</ul>
-<h3 id="u6768_u8F89_u7684_u4E2A_u4EBA_u535A_u5BA2"><a href="#u6768_u8F89_u7684_u4E2A_u4EBA_u535A_u5BA2" class="headerlink" title="杨辉的个人博客"></a>杨辉的个人博客</h3><ul>
-<li>博客地址: <a href="http://yanghui.name/" target="_blank" rel="external">http://yanghui.name/</a></li>
-<li>订阅地址: <a href="http://yanghui.name/atom.xml" target="_blank" rel="external">http://yanghui.name/atom.xml</a></li>
-</ul>
-<h3 id="u7801_u519C_u660E_u660E_u6851"><a href="#u7801_u519C_u660E_u660E_u6851" class="headerlink" title="码农明明桑"></a>码农明明桑</h3><ul>
-<li>博客地址: <a href="http://blog.isming.me/" target="_blank" rel="external">http://blog.isming.me/</a></li>
-<li>订阅地址: <a href="http://blog.isming.me/atom.xml" target="_blank" rel="external">http://blog.isming.me/atom.xml</a></li>
-</ul>
-<h3 id="u7801_u519C_u7684_u81EA_u7559_u5730"><a href="#u7801_u519C_u7684_u81EA_u7559_u5730" class="headerlink" title="码农的自留地"></a>码农的自留地</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/feelang" target="_blank" rel="external">http://blog.csdn.net/feelang</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/feelang/rss/list" target="_blank" rel="external">http://blog.csdn.net/feelang/rss/list</a></li>
-</ul>
-<h3 id="u7A0B_u5E8F_u4EA6_u975E_u733F_u7684OnePiece"><a href="#u7A0B_u5E8F_u4EA6_u975E_u733F_u7684OnePiece" class="headerlink" title="程序亦非猿的OnePiece"></a>程序亦非猿的OnePiece</h3><ul>
-<li>博客地址: <a href="http://yifeiyuan.me//" target="_blank" rel="external">http://yifeiyuan.me//</a></li>
-<li>订阅地址: <a href="http://yifeiyuan.me/atom.xml" target="_blank" rel="external">http://yifeiyuan.me/atom.xml</a></li>
-</ul>
-<h3 id="u8001_u7F57_u7684Android_u4E4B_u65C5"><a href="#u8001_u7F57_u7684Android_u4E4B_u65C5" class="headerlink" title="老罗的Android之旅"></a>老罗的Android之旅</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/luoshengyang" target="_blank" rel="external">http://blog.csdn.net/luoshengyang</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/Luoshengyang/rss/list" target="_blank" rel="external">http://blog.csdn.net/Luoshengyang/rss/list</a></li>
-</ul>
-<h3 id="u8109_u8109_u4E0D_u5F97_u8BED_u7684_u6280_u672F_u535A_u5BA2"><a href="#u8109_u8109_u4E0D_u5F97_u8BED_u7684_u6280_u672F_u535A_u5BA2" class="headerlink" title="脉脉不得语的技术博客"></a>脉脉不得语的技术博客</h3><ul>
-<li>博客地址: <a href="http://www.inferjay.com/" target="_blank" rel="external">http://www.inferjay.com/</a></li>
-<li>订阅地址: <a href="http://www.inferjay.com/atom.xml" target="_blank" rel="external">http://www.inferjay.com/atom.xml</a></li>
-</ul>
-<h3 id="u82B1_u94B1_u7684_u5E74_u534E"><a href="#u82B1_u94B1_u7684_u5E74_u534E" class="headerlink" title="花钱的年华"></a>花钱的年华</h3><ul>
-<li>博客地址: <a href="http://calvin1978.blogcn.com" target="_blank" rel="external">http://calvin1978.blogcn.com</a></li>
-<li>订阅地址: <a href="http://calvin1978.blogcn.com/feed" target="_blank" rel="external">http://calvin1978.blogcn.com/feed</a></li>
-</ul>
-<h3 id="u8D75_u51EF_u5F3A"><a href="#u8D75_u51EF_u5F3A" class="headerlink" title="赵凯强"></a>赵凯强</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/bz419927089" target="_blank" rel="external">http://blog.csdn.net/bz419927089</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/zhaokaiqiang1992/rss/list" target="_blank" rel="external">http://blog.csdn.net/zhaokaiqiang1992/rss/list</a></li>
-</ul>
-<h3 id="u90ED_u9716_u7684_u4E13_u680F"><a href="#u90ED_u9716_u7684_u4E13_u680F" class="headerlink" title="郭霖的专栏"></a>郭霖的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/sinyu890807" target="_blank" rel="external">http://blog.csdn.net/sinyu890807</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/sinyu890807/rss/list" target="_blank" rel="external">http://blog.csdn.net/sinyu890807/rss/list</a></li>
-</ul>
-<h3 id="u962E_u4E00_u5CF0_u7684_u7F51_u7EDC_u65E5_u5FD7"><a href="#u962E_u4E00_u5CF0_u7684_u7F51_u7EDC_u65E5_u5FD7" class="headerlink" title="阮一峰的网络日志"></a>阮一峰的网络日志</h3><ul>
-<li>博客地址: <a href="http://www.ruanyifeng.com/blog/" target="_blank" rel="external">http://www.ruanyifeng.com/blog/</a></li>
-<li>订阅地址: <a href="http://feeds.feedburner.com/ruanyifeng" target="_blank" rel="external">http://feeds.feedburner.com/ruanyifeng</a></li>
-</ul>
-<h3 id="u963F_u62C9_u706F_u795E_u706F_u7684_u4E13_u680F"><a href="#u963F_u62C9_u706F_u795E_u706F_u7684_u4E13_u680F" class="headerlink" title="阿拉灯神灯的专栏"></a>阿拉灯神灯的专栏</h3><ul>
-<li>博客地址: <a href="http://blog.csdn.net/nugongahou110" target="_blank" rel="external">http://blog.csdn.net/nugongahou110</a></li>
-<li>订阅地址: <a href="http://blog.csdn.net/nugongahou110/rss/list" target="_blank" rel="external">http://blog.csdn.net/nugongahou110/rss/list</a></li>
-</ul>
-<h3 id="u9648_u542F_u8D85_u7684_u535A_u5BA2"><a href="#u9648_u542F_u8D85_u7684_u535A_u5BA2" class="headerlink" title="陈启超的博客"></a>陈启超的博客</h3><ul>
-<li>博客地址: <a href="http://chenqichao.me/" target="_blank" rel="external">http://chenqichao.me/</a></li>
-<li>订阅地址: <a href="http://chenqichao.me/atom.xml" target="_blank" rel="external">http://chenqichao.me/atom.xml</a></li>
-</ul>
-<h3 id="u519C_u6C11_u4F2F_u4F2F_u7684blog"><a href="#u519C_u6C11_u4F2F_u4F2F_u7684blog" class="headerlink" title="农民伯伯的blog"></a>农民伯伯的blog</h3><ul>
-<li>博客地址: <a href="http://www.cnblogs.com/over140/" target="_blank" rel="external">http://www.cnblogs.com/over140/</a></li>
-<li>订阅地址: <a href="http://www.cnblogs.com/over140/rss" target="_blank" rel="external">http://www.cnblogs.com/over140/rss</a></li>
-</ul>
-<h3 id="Android__u8D44_u8BAF_u7C7B_u535A_u5BA2"><a href="#Android__u8D44_u8BAF_u7C7B_u535A_u5BA2" class="headerlink" title="Android 资讯类博客"></a>Android 资讯类博客</h3><h3 id="ImportNew"><a href="#ImportNew" class="headerlink" title="ImportNew"></a>ImportNew</h3><ul>
-<li>博客地址：<a href="http://www.importnew.com" target="_blank" rel="external">http://www.importnew.com</a></li>
-<li>订阅地址：<a href="http://www.importnew.com/feedz" target="_blank" rel="external">http://www.importnew.com/feed</a></li>
-</ul>
-<h3 id="InfoQ"><a href="#InfoQ" class="headerlink" title="InfoQ"></a>InfoQ</h3><ul>
-<li>博客地址：<a href="http://www.infoq.com/cn/" target="_blank" rel="external">http://www.infoq.com/cn/</a></li>
-<li>订阅地址：<a href="http://www.infoq.com/cn/feed?token=Tf6A3aAUeVJoNEgIFSkrCPINlLltJXyf" target="_blank" rel="external">http://www.infoq.com/cn/feed?token=Tf6A3aAUeVJoNEgIFSkrCPINlLltJXyf</a></li>
-</ul>
-<h3 id="u535A_u5BA2_-__u4F2F_u4E50_u5728_u7EBF"><a href="#u535A_u5BA2_-__u4F2F_u4E50_u5728_u7EBF" class="headerlink" title="博客 - 伯乐在线"></a>博客 - 伯乐在线</h3><ul>
-<li>博客地址：<a href="http://blog.jobbole.com" target="_blank" rel="external">http://blog.jobbole.com</a></li>
-<li>订阅地址：<a href="http://blog.jobbole.com/feed/" target="_blank" rel="external">http://blog.jobbole.com/feed/</a></li>
-</ul>
-<h3 id="u4EE3_u9707_u519B"><a href="#u4EE3_u9707_u519B" class="headerlink" title="代震军"></a>代震军</h3><ul>
-<li>博客地址： <a href="http://www.cnblogs.com/daizhj/" target="_blank" rel="external">http://www.cnblogs.com/daizhj/</a></li>
-<li>订阅地址： <a href="http://www.cnblogs.com/daizhj/rss/list" target="_blank" rel="external">http://www.cnblogs.com/daizhj/rss/list</a></li>
-</ul>
-<h3 id="ASCE1885-1"><a href="#ASCE1885-1" class="headerlink" title="ASCE1885"></a>ASCE1885</h3><ul>
-<li>博客地址：<a href="http://blog.csdn.net/asce1885" target="_blank" rel="external">http://blog.csdn.net/asce1885</a></li>
-<li>订阅地址：<a href="http://blog.csdn.net/asce1885/rss/list" target="_blank" rel="external">http://blog.csdn.net/asce1885/rss/list</a></li>
-<li>转自github</li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android开发/">Android开发</a></li></ul>
 	</div>
 
       
