@@ -123,7 +123,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Android-article/" style="font-size: 10px;">Android article</a> <a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/android-ui/" style="font-size: 10px;">android ui</a> <a href="/tags/android-内存/" style="font-size: 10px;">android 内存</a> <a href="/tags/android架构/" style="font-size: 10px;">android架构</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hacker/" style="font-size: 10px;">hacker</a> <a href="/tags/json、android/" style="font-size: 10px;">json、android</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/tags/windows-command/" style="font-size: 10px;">windows command</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
+						<a href="/tags/Android-article/" style="font-size: 10px;">Android article</a> <a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android-ui/" style="font-size: 10px;">android ui</a> <a href="/tags/android-内存/" style="font-size: 10px;">android 内存</a> <a href="/tags/android架构/" style="font-size: 10px;">android架构</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hacker/" style="font-size: 10px;">hacker</a> <a href="/tags/json、android/" style="font-size: 10px;">json、android</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/tags/windows-command/" style="font-size: 10px;">windows command</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
 					</div>
 				</section>
 				
@@ -242,6 +242,67 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-三种APP启动模式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/02/23/三种APP启动模式/" class="article-date">
+  	<time datetime="2016-02-23T08:54:48.000Z" itemprop="datePublished">2016-02-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/23/三种APP启动模式/">三种APP启动模式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>通常APP启动会有三种模式：首次启动，冷启动，和热启动。</p>
+<p>首次启动是指用户在安装APP之后的第一次启动。首次启动的速度是最慢的，因为操作系统需要进行许多初始化操作，例如创建SQLite数据库，将多个dex文件编译为本地代码等。尽管首次启动越快越好，但由于它只会在用户安装或者更新APP的时候才会发生一次，所以优化首次启动速度的效果不如优化其他启动模式的效果明显。</p>
+<p>冷启动是指用户长时间未运行APP之后再次启动APP。冷启动之“冷”，是由于操作系统为了给其他活跃的APP腾出资源，把长时间未运行的APP进程杀死，将其资源从内存中移除了。由于重新启动的APP的代码、资源、数据对象等需要重新加载和创建，所以冷启动通常会比较慢。如果用户每天只会启动APP几次，那大多数情况下每次启动都属于冷启动，因此提升冷启动的速度能显著提高用户体验。</p>
+<p>热启动是指用户短时间切换到其他APP之后再次切换回来。这种情况下APP的进程并未被操作系统杀死， 资源仍保持在内存中，所以热启动的速度通常都很快。</p>
+<p>小结一下，在这三种启动模式中，冷启动的速度在用户体验上感知最显著，应该作为启动速度优化的重点。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-android黑客工具箱" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -543,81 +604,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json、android/">json、android</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Android内存泄漏研究" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/16/Android内存泄漏研究/" class="article-date">
-  	<time datetime="2016-02-16T03:27:25.000Z" itemprop="datePublished">2016-02-16</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/16/Android内存泄漏研究/">Android内存泄漏研究</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="u6982_u5FF5"><a href="#u6982_u5FF5" class="headerlink" title="概念"></a>概念</h1><h3 id="u6839_u641C_u7D22_u7B97_u6CD5"><a href="#u6839_u641C_u7D22_u7B97_u6CD5" class="headerlink" title="根搜索算法"></a>根搜索算法</h3><p>Android虚拟机的垃圾回收采用的是<code>根搜索算法</code>。GC会从根节点（GC Roots）开始对heap进行遍历。到最后，部分没有直接或者间接引用到GC Roots的就是需要回收的垃圾，会被GC回收掉。</p>
-<p>根搜索算法相比引用计数法很好的解决了循环引用的问题。举个例子，Activity有View的引用，View也有Activity的引用，之前我还尝试去源代码里找Activity何时和View断开连接是大错特错了。当Activity finish掉之后，Activity和View的循环引用已成孤岛，不再引用到GC Roots，无需断开也会被回收掉。</p>
-<h3 id="u5185_u5B58_u6CC4_u6F0F"><a href="#u5185_u5B58_u6CC4_u6F0F" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p><code>Android内存泄漏</code>指的是进程中某些对象（垃圾对象）已经没有使用价值了，但是它们却可以直接或间接地引用到gc roots导致无法被GC回收。无用的对象占据着内存空间，使得实际可使用内存变小，形象地说法就是内存泄漏了。</p>
-<h3 id="u573A_u666F"><a href="#u573A_u666F" class="headerlink" title="场景"></a>场景</h3><ul>
-<li>类的静态变量持有大数据对象<br>静态变量长期维持到大数据对象的引用，阻止垃圾回收。</li>
-<li>非静态内部类的静态实例<br>非静态内部类会维持一个到外部类实例的引用，如果非静态内部类的实例是静态的，就会间接长期维持着外部类的引用，阻止被回收掉。</li>
-<li>资源对象未关闭<br>资源性对象如Cursor、File、Socket，应该在使用后及时关闭。未在finally中关闭，会导致异常情况下资源对象未被释放的隐患。</li>
-<li>注册对象未反注册<br>未反注册会导致观察者列表里维持着对象的引用，阻止垃圾回收。</li>
-<li><code>Handler</code>临时性内存泄露<br>Handler通过发送Message与主线程交互，Message发出之后是存储在MessageQueue中的，有些Message也不是马上就被处理的。在Message中存在一个 target，是Handler的一个引用，如果Message在Queue中存在的时间越长，就会导致Handler无法被回收。如果Handler是非静态的，则会导致Activity或者Service不会被回收。<br>由于AsyncTask内部也是Handler机制，同样存在内存泄漏的风险。<br>此种内存泄露，一般是临时性的。<h2 id="u9884_u9632"><a href="#u9884_u9632" class="headerlink" title="预防"></a>预防</h2></li>
-<li>不要维持到Activity的长久引用，对activity的引用应该和activity本身有相同的生命周期。</li>
-<li>尽量使用context-application代替context-activity</li>
-<li>Activity中尽量不要使用非静态内部类，可以使用静态内部类和WeakReference代替。<h2 id="u68C0_u6D4B"><a href="#u68C0_u6D4B" class="headerlink" title="检测"></a>检测</h2><h3 id="u9759_u6001_u68C0_u6D4B"><a href="#u9759_u6001_u68C0_u6D4B" class="headerlink" title="静态检测"></a>静态检测</h3>静态检测主要是检测资源未关闭的情况，Eclipse和Android Studio都可以检测出IO或者Socket未关闭的情况，然后在finally中关闭即可。</li>
-</ul>
-<h3 id="u52A8_u6001_u76D1_u6D4B"><a href="#u52A8_u6001_u76D1_u6D4B" class="headerlink" title="动态监测"></a>动态监测</h3><p>动态检测主要是依靠<a href="https://eclipse.org/mat/" target="_blank" rel="external">MAT</a>这个工具。2011年Google IO有一个<a href="http://droidyue.com/blog/2014/11/02/note-for-google-io-memory-management-for-android-chinese-edition/" target="_blank" rel="external">主题演讲</a>，非常详细地讲解了内存泄露的检测，包含MAT工具的使用，值得一看。<br>我在某项目中使用MAT检测，发现一处内存泄漏，分享一下过程。<br>从首页到商户列表到商户详情再退回首页执行<code>Dump HPROF File</code>，查看MAT中的<code>Histogram</code>，过滤Activity后结果如下： Histogram<br><img src="/imgs/Histogram.png" alt="Histogram"></p>
-<p>仍然存在<code>ShopInfoActivity</code>的实例，选中右键点击<code>Merge Shortest Paths to GC Roots</code>，结果如下： Path<br><img src="/imgs/Path.png" alt="Path"></p>
-<p>可以看到<code>ShopDatabase</code>中维持着<code>ShopInfoActivity</code>的引用，查看源代码如下：</p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class ShopDatabase &#123;</span><br><span class="line">    …</span><br><span class="line">   <span class="keyword"> private</span><span class="keyword"> static</span> ShopDatabase instance;</span><br><span class="line">   <span class="keyword"> public</span><span class="keyword"> static</span> ShopDatabase<span class="function"> getInstance(</span>Context context<span class="function">)</span> &#123;</span><br><span class="line">       <span class="instruction"> if </span>(instance == null &amp;&amp; context != null<span class="function">)</span> &#123;</span><br><span class="line">           <span class="instruction"> instance </span>=<span class="instruction"> new </span>ShopDatabase(context<span class="function">)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       <span class="instruction"> return </span>instance;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword"> protected</span> Context context;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>很明显，静态变量instance长期持有context的引用，造成内存泄露。<br>所以动态检测内存泄露的一个简单思路就是随意操作APP，最后返回首页，然后用MAT检测，查看是否存在Activity多于一个或者Activity不正常存在的问题。</p>
-<h2 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://android-developers.blogspot.com/2009/01/avoiding-memory-leaks.html" target="_blank" rel="external">Avoiding memory leaks</a><br><a href="http://android-developers.blogspot.com/2011/03/memory-analysis-for-android.html" target="_blank" rel="external">Memory Analysis for Android Applications</a><br><a href="http://dubroy.com/memory_management_for_android_apps.pdf" target="_blank" rel="external">memory_management_for_android_apps</a><br><a href="http://droidyue.com/blog/2014/11/02/note-for-google-io-memory-management-for-android-chinese-edition/" target="_blank" rel="external">Google IO：Android内存管理主题演讲记录</a><br><a href="http://blog.csdn.net/gemmem/article/details/13017999" target="_blank" rel="external">Android内存泄漏分析及调试</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-内存/">android 内存</a></li></ul>
 	</div>
 
       
