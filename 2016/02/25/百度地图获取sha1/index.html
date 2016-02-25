@@ -4,17 +4,36 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Tag: git | FangYuan&#39;s Blog</title>
+  <title>百度地图获取sha1 | FangYuan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Collect and share perfect articles about Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="FangYuan's Blog">
-<meta property="og:url" content="http://www.fangyuan.trade/tags/git/index.html">
+  <meta name="description" content="百度地图 获取release版和debug版的签名因为release版本和debug版本的sha1的值不同，如果不更改相应的百度地图的key时，会造成百度地图不能显示。
+如果app是release版本：
+
+先给app签名，得到一个jks文件；
+把jks文件copy到C:\Users\XXX.android  目录下
+cmd-&amp;gt;cd .android
+输入keytool -list -v -k">
+<meta property="og:type" content="article">
+<meta property="og:title" content="百度地图获取sha1">
+<meta property="og:url" content="http://www.fangyuan.trade/2016/02/25/百度地图获取sha1/index.html">
 <meta property="og:site_name" content="FangYuan's Blog">
-<meta property="og:description" content="Collect and share perfect articles about Android">
+<meta property="og:description" content="百度地图 获取release版和debug版的签名因为release版本和debug版本的sha1的值不同，如果不更改相应的百度地图的key时，会造成百度地图不能显示。
+如果app是release版本：
+
+先给app签名，得到一个jks文件；
+把jks文件copy到C:\Users\XXX.android  目录下
+cmd-&amp;gt;cd .android
+输入keytool -list -v -k">
+<meta property="og:updated_time" content="2016-02-25T02:57:35.166Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FangYuan's Blog">
-<meta name="twitter:description" content="Collect and share perfect articles about Android">
+<meta name="twitter:title" content="百度地图获取sha1">
+<meta name="twitter:description" content="百度地图 获取release版和debug版的签名因为release版本和debug版本的sha1的值不同，如果不更改相应的百度地图的key时，会造成百度地图不能显示。
+如果app是release版本：
+
+先给app签名，得到一个jks文件；
+把jks文件copy到C:\Users\XXX.android  目录下
+cmd-&amp;gt;cd .android
+输入keytool -list -v -k">
   
     <link rel="alternative" href="/atom.xml" title="FangYuan&#39;s Blog" type="application/atom+xml">
   
@@ -241,53 +260,118 @@
 	</div>
 </nav>
 
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-百度地图获取sha1" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/02/23/git进阶/" class="archive-article-date">
-  	<time datetime="2016-02-23T07:21:52.000Z" itemprop="datePublished">2月 23</time>
+    <div class="article-meta">
+      <a href="/2016/02/25/百度地图获取sha1/" class="article-date">
+  	<time datetime="2016-02-25T02:51:10.000Z" itemprop="datePublished">2016-02-25</time>
 </a>
-        </div>
-    	 
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/02/23/git进阶/">git进阶</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      百度地图获取sha1
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-地图/">android 地图</a></li></ul>
 	</div>
 
-          
+        
 
-        </div>
         <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
+      </div>
+      
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="u767E_u5EA6_u5730_u56FE__u83B7_u53D6release_u7248_u548Cdebug_u7248_u7684_u7B7E_u540D"><a href="#u767E_u5EA6_u5730_u56FE__u83B7_u53D6release_u7248_u548Cdebug_u7248_u7684_u7B7E_u540D" class="headerlink" title="百度地图 获取release版和debug版的签名"></a>百度地图 获取release版和debug版的签名</h2><p>因为release版本和debug版本的sha1的值不同，如果不更改相应的百度地图的key时，会造成百度地图不能显示。</p>
+<p>如果app是release版本：</p>
+<ol>
+<li>先给app签名，得到一个jks文件；</li>
+<li>把jks文件copy到C:\Users\XXX.android  目录下</li>
+<li>cmd-&gt;cd .android</li>
+<li>输入keytool -list -v -keystore xxx.jks 回车，输入签名时的密码</li>
+</ol>
+<p>如果是debug版本输入keytool -list -v -keystore debug.keystore，密码默认为android</p>
+<p>以上获取sha1值的方法均为在Android studio平台</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/02/23/三种APP启动模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">三种APP启动模式</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="百度地图获取sha1" data-title="百度地图获取sha1" data-url="http://www.fangyuan.trade/2016/02/25/百度地图获取sha1/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
 
 </div>
       <footer id="footer">
@@ -321,9 +405,9 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false
 	}

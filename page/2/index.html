@@ -123,7 +123,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Android-article/" style="font-size: 10px;">Android article</a> <a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android-ui/" style="font-size: 10px;">android ui</a> <a href="/tags/android-内存/" style="font-size: 10px;">android 内存</a> <a href="/tags/android架构/" style="font-size: 10px;">android架构</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hacker/" style="font-size: 10px;">hacker</a> <a href="/tags/json、android/" style="font-size: 10px;">json、android</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/tags/windows-command/" style="font-size: 10px;">windows command</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
+						<a href="/tags/Android-article/" style="font-size: 10px;">Android article</a> <a href="/tags/Android代码/" style="font-size: 15px;">Android代码</a> <a href="/tags/Android开发/" style="font-size: 20px;">Android开发</a> <a href="/tags/Android文章/" style="font-size: 15px;">Android文章</a> <a href="/tags/Android深度文/" style="font-size: 10px;">Android深度文</a> <a href="/tags/Android黑科技/" style="font-size: 10px;">Android黑科技</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android-ui/" style="font-size: 10px;">android ui</a> <a href="/tags/android-内存/" style="font-size: 10px;">android 内存</a> <a href="/tags/android-地图/" style="font-size: 10px;">android 地图</a> <a href="/tags/android架构/" style="font-size: 10px;">android架构</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hacker/" style="font-size: 10px;">hacker</a> <a href="/tags/json、android/" style="font-size: 10px;">json、android</a> <a href="/tags/markdown用法/" style="font-size: 10px;">markdown用法</a> <a href="/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/tags/windows-command/" style="font-size: 10px;">windows command</a> <a href="/tags/个人/" style="font-size: 10px;">个人</a> <a href="/tags/文章/" style="font-size: 10px;">文章</a>
 					</div>
 				</section>
 				
@@ -242,6 +242,82 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Android中动态解析Json" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/02/17/Android中动态解析Json/" class="article-date">
+  	<time datetime="2016-02-17T01:33:59.000Z" itemprop="datePublished">2016-02-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/17/Android中动态解析Json/">Android中动态解析Json</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Android APP与服务器数据的交互离不开json，看看下面一些比较聪明的解析服务器传回数据的方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Result</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String status;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getStatus</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStatus</span><span class="params">(String status)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.status = status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCount</span><span class="params">(<span class="keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这是一个用于接收服务器传回的Json的通用范型实体类，我的思路是在每个需要进行网络解析的地方传入不同的范型，利用FastJson对不同的网路请求结果进行一次解析，大致代码如下：<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> response = new <span class="type">String</span>(responseBody);</span><br><span class="line">   <span class="type">Result</span>&lt;<span class="type">String</span>&gt; <span class="literal">result</span> = <span class="type">JSON</span>.parseObject(response, 	new <span class="type">TypeReference</span>&lt;<span class="type">Result</span>&lt;<span class="type">String</span>&gt;&gt;() &#123;</span><br><span class="line">               &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>虽然美好的愿望实现了，但是并没有持续多久，没有几次它就出错了。而且问题很奇葩，主要原因是传范型引起的，我在FastJson的GitHub的Issue中也发现了这个问题，但是作者并没有给出结果。</p>
+<p>Issue链接：<a href="https://github.com/alibaba/fastjson/issues/330" target="_blank" rel="external">https://github.com/alibaba/fastjson/issues/330</a></p>
+<p>google了很久并未解决，项目催的又紧，只好尝试使用<a href="https://github.com/google/gson" target="_blank" rel="external">Gson</a>尝试，居然没这问题，然后这个问题就这么混过去了。</p>
+<p>之后空下来了，想通过二次解析来实现之前利用FastJson一次解析出现的问题。其实就是将之前出错的data部分当成Json字符串，这样当status异常的时候就无需解析了，也节省了不必要的操作。</p>
+<h2 id="ParameterizedType"><a href="#ParameterizedType" class="headerlink" title="ParameterizedType"></a>ParameterizedType</h2><p>Type直接子接口；　<br>ParameterizedType，GenericArrayType，TypeVariable和WildcardType四种类型的接口</p>
+<ul>
+<li>ParameterizedType: 表示一种参数化的类型，比如Collection</li>
+<li>GenericArrayType: 表示一种元素类型是参数化类型或者类型变量的数组类型</li>
+<li>TypeVariable: 是各种类型变量的公共父接口</li>
+<li>WildcardType: 代表一种通配符类型表达式，比如?, ? extends Number, ? super Integer【wildcard是一个单词：就是“通配符”】</li>
+<li>ParameterizedType接口类型的含义：表示参数化类型&lt;&gt;中的实际类型。</li>
+</ul>
+<p>源码声明：Type[] getActualTypeArguments();<br>【注意】无论&lt;&gt;中有几层&lt;&gt;嵌套，这个方法仅仅脱去最外层的&lt;&gt;之后剩下的内容就作为这个方法的返回值。</p>
+<h2 id="u5B9E_u73B0_u8FC7_u7A0B"><a href="#u5B9E_u73B0_u8FC7_u7A0B" class="headerlink" title="实现过程"></a>实现过程</h2><h3 id="u5728_u67D0_u4E2A_u573A_u666F_u7684_u57FA_u7C7B_u4E2D_u4F20_u5165_u8303_u578B_u7684_u53C2_u6570T"><a href="#u5728_u67D0_u4E2A_u573A_u666F_u7684_u57FA_u7C7B_u4E2D_u4F20_u5165_u8303_u578B_u7684_u53C2_u6570T" class="headerlink" title="在某个场景的基类中传入范型的参数T"></a>在某个场景的基类中传入范型的参数T</h3><p>例如：<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> sabstract BaseRecycleListFragment&lt;T <span class="keyword">extends</span> Entity&gt;&#123;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="u5728_u57FA_u7C7B_u7684_u7F51_u7EDC_u6570_u636E_u7684_u56DE_u8C03_u65B9_u6CD5_u4E2D_u8FDB_u884C_u4E8C_u6B21_u89E3_u6790"><a href="#u5728_u57FA_u7C7B_u7684_u7F51_u7EDC_u6570_u636E_u7684_u56DE_u8C03_u65B9_u6CD5_u4E2D_u8FDB_u884C_u4E8C_u6B21_u89E3_u6790" class="headerlink" title="在基类的网络数据的回调方法中进行二次解析"></a>在基类的网络数据的回调方法中进行二次解析</h3><p>例如：<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Result</span>&lt;<span class="type">JSONArray</span>&gt; <span class="literal">result</span> = <span class="type">JSON</span>.parseObject(responseBody,<span class="type">Result</span>.class);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="literal">result</span>!=null &amp;&amp; <span class="literal">result</span>.getStatus().equals(<span class="string">"ok"</span>))</span><br><span class="line"></span><br><span class="line"><span class="type">Type</span> <span class="keyword">type</span>  = <span class="type">BaseRecycleListFragment</span>.this.getClass().getGenericSuperclass();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">type</span> instanceof <span class="type">ParameterizedType</span>)&#123;</span><br><span class="line">	<span class="type">Type</span> poClass = (<span class="type">ParameterizedType</span>).getActualTypeArguments()[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">if</span>(poClass!=null)&#123;</span><br><span class="line">		<span class="type">List</span>&lt;T&gt; data = <span class="type">JSON</span>.parseArray(<span class="type">JSON</span>.toJSONString(<span class="literal">result</span>.getData()),(<span class="type">Class</span>&lt;T&gt; poClass));</span><br><span class="line">		...</span><br><span class="line">		...</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码就是一个二次解析一个列表的例子，首先判断status是否正确，正确的话进行二次解析。</p>
+<p>这样就避免了1次解析出错的情况了。</p>
+<h3 id="u5176_u4ED6"><a href="#u5176_u4ED6" class="headerlink" title="其他"></a>其他</h3><p><a href="http://blog.xuanzhangjiong.xyz/tags/Java%E8%8C%83%E5%9E%8B%E4%B8%AD%E7%9A%84%E6%8A%80%E5%B7%A7/" target="_blank" rel="external">Java范型中的技巧</a><br><a href="http://blog.xuanzhangjiong.xyz/2016/02/08/Class%E4%B8%ADT%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_blank" rel="external">Class中T的使用</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json、android/">json、android</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Android内存泄漏研究" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -477,118 +553,6 @@
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vpn/">vpn</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Android处理崩溃的一些实践" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/13/Android处理崩溃的一些实践/" class="article-date">
-  	<time datetime="2016-02-13T15:12:01.000Z" itemprop="datePublished">2016-02-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/13/Android处理崩溃的一些实践/">Android处理崩溃的一些实践</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Android_u5904_u7406_u5D29_u6E83_u7684_u4E00_u4E9B_u5B9E_u8DF5"><a href="#Android_u5904_u7406_u5D29_u6E83_u7684_u4E00_u4E9B_u5B9E_u8DF5" class="headerlink" title="Android处理崩溃的一些实践"></a>Android处理崩溃的一些实践</h1><p>对于任何程序来说，崩溃都是一件很难避免的事情，当然Android程序也不例外。在Android程序中，引起崩溃的多属于运行时异常或者错误，对于这些异常我们很难做到类似Checked Exception那样显式捕获，因而最终导致了程序崩溃。本文讲介绍一些如何处理崩溃的实践，比如收集崩溃的stacktrace，甚至如何避免出现程序已停止的对话框。</p>
-<h2 id="u5982_u4F55_u6536_u96C6_u5D29_u6E83_u4FE1_u606F"><a href="#u5982_u4F55_u6536_u96C6_u5D29_u6E83_u4FE1_u606F" class="headerlink" title="如何收集崩溃信息"></a>如何收集崩溃信息</h2><p>收集崩溃信息，可以更好的修复问题，增强程序的稳定性。Android中的崩溃收集沿用了Java的收集机制，实现起来比较简单。</p>
-<ol>
-<li>实现UncaughtExceptionHandler</li>
-</ol>
-<p>我们需要实现UncaughtExceptionHandler接口中的uncaughtException方法。该方法体中最常见的操作就是读取崩溃的stacktrace信息，然后上报到服务器数据便于开发者分析。实现代码如下：</p>
-<pre><code>public class SimpleUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-    private static final String LOGTAG = &quot;SimpleUncaughtExceptionHandler&quot;;
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-      //读取stacktrace信息
-        final Writer result = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(result);
-        ex.printStackTrace(printWriter);
-        String errorReport = result.toString();
-        Log.i(LOGTAG, &quot;uncaughtException errorReport=&quot; + errorReport);
-    }
-}
-</code></pre><p>除此之外，还建议携带以下信息发送到服务器，帮助更快定位和重现问题。</p>
-<p>设备唯一ID（基于IMEI或者Android ID等），方便根据用户提供的id，查找崩溃的stacktrace<br>设备语言与区域 方便重现<br>应用的版本号<br>设备的系统版本<br>设备类型，如平板，手机，TV等<br>崩溃发生的时间等<br>注册默认的异常处理</p>
-<p>注册默认的异常处理就是最后的一步，很简单，通常建议放在Application的onCreate方法中进行。</p>
-<p>public class DroidApplication extends Application {<br>    private static final String LOGTAG = “DroidApplication”;</p>
-<pre><code>@Override
-public void onCreate() {
-    super.onCreate();
-    Log.i(LOGTAG, &quot;onCreate&quot;);
-    Thread.setDefaultUncaughtExceptionHandler(new SimpleUncaughtExceptionHandler());
-}
-</code></pre><p>}</p>
-<p>验证</p>
-<p>当我们刻意触发一个NullPointerException时，过滤日志adb logcat | grep SimpleUncaughtExceptionHandler类似如下信息，则说明成功了。</p>
-<p>I/SimpleUncaughtExceptionHandler(22469): uncaughtException errorReport=java.lang.NullPointerException<br>I/SimpleUncaughtExceptionHandler(22469):  at com.droidyue.avoidforceclosedemo.MainActivity.causeNPE(MainActivity.java:22)<br>I/SimpleUncaughtExceptionHandler(22469):  at com.droidyue.avoidforceclosedemo.MainActivity.onClick(MainActivity.java:29)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.view.View.performClick(View.java:4470)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.view.View$PerformClick.run(View.java:18593)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.os.Handler.handleCallback(Handler.java:733)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.os.Handler.dispatchMessage(Handler.java:95)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.os.Looper.loop(Looper.java:157)<br>I/SimpleUncaughtExceptionHandler(22469):  at android.app.ActivityThread.main(ActivityThread.java:5867)<br>I/SimpleUncaughtExceptionHandler(22469):  at java.lang.reflect.Method.invokeNative(Native Method)<br>I/SimpleUncaughtExceptionHandler(22469):  at java.lang.reflect.Method.invoke(Method.java:515)<br>I/SimpleUncaughtExceptionHandler(22469):  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:858)<br>I/SimpleUncaughtExceptionHandler(22469):  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:674)<br>I/SimpleUncaughtExceptionHandler(22469):  at dalvik.system.NativeStart.main(Native Method)</p>
-<h2 id="u4E0D_u51FA_u73B0_u5E94_u7528_u5D29_u6E83_u5BF9_u8BDD_u6846"><a href="#u4E0D_u51FA_u73B0_u5E94_u7528_u5D29_u6E83_u5BF9_u8BDD_u6846" class="headerlink" title="不出现应用崩溃对话框"></a>不出现应用崩溃对话框</h2><p>在Android崩溃的时候，我们都会看到类似这样的对话框</p>
-<p><img src="/imgs/benkui.png" alt="img1"></p>
-<p>然而，实际上有些情况下是不需要展示这个对话框的，一个常用的例子，我的程序中一个不太重要的推送服务采用了单独的进程，当这个进程崩溃时，实际上是可以允许不让用户感知的。</p>
-<p>如果我们采取主进程仍弹出对话框，其他进程不弹出的策略，那么我们的问题，可以总结成如下三个</p>
-<p>如何判断进程为主进程还是其他进程，或者某个进程<br>如何在某些进程不弹出应用崩溃对话框<br>如何在主进程弹出崩溃对话框<br>既然问题来了，我们就开动挖掘机深挖吧。</p>
-<p>进程判定</p>
-<p>进行进程判定也比较容易，首先我们需要获得进程名</p>
-<pre><code>public static String getProcessName(Context appContext) {
-    String currentProcessName = &quot;&quot;;
-    int pid = android.os.Process.myPid();
-    ActivityManager manager = (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
-    for (ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
-        if (processInfo.pid == pid) {
-            currentProcessName = processInfo.processName;
-            break;
-        }
-    }
-    return currentProcessName;
-}
-</code></pre><p>判断主进程，则对比进程名是否和包名相同即可</p>
-<p>mAppContext.getPackageName().equils(processName)</p>
-<p>判断为某个进程，在mainifest这样这样声明</p>
-<p><service android:name=".DroidService" android:process=":service"></service><br>其对应的完整进程名为com.droidyue.avoidforceclosedemo:service，我们判断可以使用如下代码<br>“com.droidyue.avoidforceclosedemo:service”.equals(processName)<br><a href="http://droidyue.com/blog/2015/12/06/practise-about-crash-in-android/" target="_blank" rel="external">更多请点击</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-article/">Android article</a></li></ul>
 	</div>
 
       
