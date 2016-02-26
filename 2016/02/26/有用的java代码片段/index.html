@@ -4,17 +4,18 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>FangYuan&#39;s Blog</title>
+  <title>有用的java代码片段 | FangYuan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Collect and share perfect articles about Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="FangYuan's Blog">
-<meta property="og:url" content="http://www.fangyuan.trade/index.html">
+  <meta name="description" content="向文件末尾添加内容1234567891011BufferedWriter out = null;  try &amp;#123;      out = new BufferedWriter(new FileWriter(”filename”, true));      out.write(”aString”);  &amp;#125; catch (IOException e) &amp;#123;      // er">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有用的java代码片段">
+<meta property="og:url" content="http://www.fangyuan.trade/2016/02/26/有用的java代码片段/index.html">
 <meta property="og:site_name" content="FangYuan's Blog">
-<meta property="og:description" content="Collect and share perfect articles about Android">
+<meta property="og:description" content="向文件末尾添加内容1234567891011BufferedWriter out = null;  try &amp;#123;      out = new BufferedWriter(new FileWriter(”filename”, true));      out.write(”aString”);  &amp;#125; catch (IOException e) &amp;#123;      // er">
+<meta property="og:updated_time" content="2016-02-26T02:19:01.801Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FangYuan's Blog">
-<meta name="twitter:description" content="Collect and share perfect articles about Android">
+<meta name="twitter:title" content="有用的java代码片段">
+<meta name="twitter:description" content="向文件末尾添加内容1234567891011BufferedWriter out = null;  try &amp;#123;      out = new BufferedWriter(new FileWriter(”filename”, true));      out.write(”aString”);  &amp;#125; catch (IOException e) &amp;#123;      // er">
   
     <link rel="alternative" href="/atom.xml" title="FangYuan&#39;s Blog" type="application/atom+xml">
   
@@ -241,9 +242,7 @@
 	</div>
 </nav>
 
-      <div class="body-wrap">
-  
-    <article id="post-有用的java代码片段" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-有用的java代码片段" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2016/02/26/有用的java代码片段/" class="article-date">
@@ -259,12 +258,23 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/26/有用的java代码片段/">有用的java代码片段</a>
+    <h1 class="article-title" itemprop="name">
+      有用的java代码片段
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java-code/">java code</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -291,306 +301,68 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java-code/">java code</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/02/25/百度地图获取sha1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">百度地图获取sha1</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
-
-
-
-
-
-
-
-  
-    <article id="post-百度地图获取sha1" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/25/百度地图获取sha1/" class="article-date">
-  	<time datetime="2016-02-25T02:51:10.000Z" itemprop="datePublished">2016-02-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/25/百度地图获取sha1/">百度地图获取sha1</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="u767E_u5EA6_u5730_u56FE__u83B7_u53D6release_u7248_u548Cdebug_u7248_u7684_u7B7E_u540D"><a href="#u767E_u5EA6_u5730_u56FE__u83B7_u53D6release_u7248_u548Cdebug_u7248_u7684_u7B7E_u540D" class="headerlink" title="百度地图 获取release版和debug版的签名"></a>百度地图 获取release版和debug版的签名</h2><p>因为release版本和debug版本的sha1的值不同，如果不更改相应的百度地图的key时，会造成百度地图不能显示。</p>
-<p>如果app是release版本：</p>
-<ol>
-<li>先给app签名，得到一个jks文件；</li>
-<li>把jks文件copy到C:\Users\XXX.android  目录下</li>
-<li>cmd-&gt;cd .android</li>
-<li>输入keytool -list -v -keystore xxx.jks 回车，输入签名时的密码</li>
-</ol>
-<p>如果是debug版本输入keytool -list -v -keystore debug.keystore，密码默认为android</p>
-<p>以上获取sha1值的方法均为在Android studio平台</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-地图/">android 地图</a></li></ul>
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
 
 
 
 
-
-
-
-  
-    <article id="post-三种APP启动模式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/23/三种APP启动模式/" class="article-date">
-  	<time datetime="2016-02-23T08:54:48.000Z" itemprop="datePublished">2016-02-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/23/三种APP启动模式/">三种APP启动模式</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通常APP启动会有三种模式：首次启动，冷启动，和热启动。</p>
-<p>首次启动是指用户在安装APP之后的第一次启动。首次启动的速度是最慢的，因为操作系统需要进行许多初始化操作，例如创建SQLite数据库，将多个dex文件编译为本地代码等。尽管首次启动越快越好，但由于它只会在用户安装或者更新APP的时候才会发生一次，所以优化首次启动速度的效果不如优化其他启动模式的效果明显。</p>
-<p>冷启动是指用户长时间未运行APP之后再次启动APP。冷启动之“冷”，是由于操作系统为了给其他活跃的APP腾出资源，把长时间未运行的APP进程杀死，将其资源从内存中移除了。由于重新启动的APP的代码、资源、数据对象等需要重新加载和创建，所以冷启动通常会比较慢。如果用户每天只会启动APP几次，那大多数情况下每次启动都属于冷启动，因此提升冷启动的速度能显著提高用户体验。</p>
-<p>热启动是指用户短时间切换到其他APP之后再次切换回来。这种情况下APP的进程并未被操作系统杀死， 资源仍保持在内存中，所以热启动的速度通常都很快。</p>
-<p>小结一下，在这三种启动模式中，冷启动的速度在用户体验上感知最显著，应该作为启动速度优化的重点。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="有用的java代码片段" data-title="有用的java代码片段" data-url="http://www.fangyuan.trade/2016/02/26/有用的java代码片段/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
 
 
 
-
-
-
-
-
-  
-    <article id="post-android黑客工具箱" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/23/android黑客工具箱/" class="article-date">
-  	<time datetime="2016-02-23T07:28:14.000Z" itemprop="datePublished">2016-02-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/23/android黑客工具箱/">Android黑客工具箱</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>免责声明：此份清单仅供学习之用。知悉黑客软件能做到哪些。我们不支持读者利用其中的任何工具进行任何不道德的恶意攻击行为。<br><img src="/imgs/hacker1.png" alt=""><br>根据业界的一系列评测以及亲身经验，我们整理出了这份最佳Android黑客应用清单。除了对应用本身的说明之外，还将提供与之相关的网站以及下载链接，从而帮助大家立即安装尝试。</p>
-<h2 id="AndroRAT"><a href="#AndroRAT" class="headerlink" title="AndroRAT"></a>AndroRAT</h2><p><img src="/imgs/hacker2.png" alt=""><br>AndroRAT一词源自Android与RAT（即远程管理工具）。这款顶级黑客工具已经拥有相当长的发展历史，而且最初其实是一款客户端/服务 器应用。这款应用旨在帮助用户以远程方式控制Android系统，同时从其中提取信息。这款Android应用会在系统启动完成后以服务形式开始运行。因 此，如果用户并不需要与该服务进行交互。此应用还允许大家通过呼叫或者短信等方式触发服务器连接。</p>
-<p>这款极具实用性的Android黑客应用之功能包括收集联系人、通话记录、消息以及所在位置等信息。此应用还允许大家以远程方式对接收到的消息以及手机运行状态加以监控，进行手机呼叫与短信发送，通过摄像头拍摄照片以及在默认浏览器当中打开URL等等。</p>
-<p>github地址：<a href="https://github.com/wszf/androrat" target="_blank" rel="external">AndroRAT</a></p>
-<h2 id="Hackode"><a href="#Hackode" class="headerlink" title="Hackode"></a>Hackode</h2><p><img src="/imgs/hacker3.png" alt=""><br>Hackode是一款Android应用，其基本上属于一整套工具组合，主要面向高阶黑客、IT专家以及渗透测试人员。在这款应用当中，我们可以找到三款模块——Reconnaissance、Scanning以及Security Feed。</p>
-<p>通过这款应用，大家可以实现谷歌攻击、SQL注入、MySQL Server、Whois、Scanning、DNS查找、IP、MX记录、DNS Dif、Security RSS Feed以及漏洞利用等功能。这是一款出色的Android黑客应用，非常适合入门者作为起步工具且无需提供任何个人隐私信息。</p>
-<p>下载地址：<a href="https://play.google.com/store/apps/details?id=com.techfond.hackode" target="_blank" rel="external">Hackode</a></p>
-<h2 id="zANTI"><a href="#zANTI" class="headerlink" title="zANTI"></a>zANTI</h2><p><img src="/imgs/hacker4.png" alt=""><br>zANTI是一款来自Zimperium的知名Android黑客套件。此软件套件当中包含多种工具，且广泛适用于各类渗透测试场景。这套移动渗透 测试工具包允许安全研究人员轻松对网络环境加以扫描。此工具包还允许IT管理员模拟出一套先进黑客环境，并以此为基础检测多项恶意技术方案。</p>
-<p>大家可以将zANTI视为一款能够将Backtrack强大力量引入自己Android设备的应用。只要登录至zANTI，它就会映射整套网络并嗅探其中的cookie以掌握此前曾经访问过的各个网站——这要归功于设备当中的ARP缓存。</p>
-<p>应用当中的多种模块包括网络映射、端口发现、嗅探、数据包篡改、DoS以及MITM等等。</p>
-<p>下载地址：<a href="https://www.zimperium.com/zanti-mobile-penetration-testing" target="_blank" rel="external">zANTI</a></p>
-<h2 id="FaceNiff"><a href="#FaceNiff" class="headerlink" title="FaceNiff"></a>FaceNiff</h2><p><img src="/imgs/hacker5.png" alt=""><br>FaceNiff是一款顶级Android黑客应用，允许大家拦截并嗅探WiFi网络流量。这款工具广泛适用于Android用户窥探他人的 Facebook、Twitter以及其它社交媒体网站。这款在黑客群体中广受好评的工具能够从WiFi网络中窃取cookie，并为攻击者提供未经授权 的、指向受害者账户的访问通道。</p>
-<p>FaceNiff由Bartosz Ponurkiewicz开发完成——这位开发者同时也编写出了桌面黑客工具Firesheep for Firefox。</p>
-<p>下载地址：<a href="http://faceniff.ponury.net/" target="_blank" rel="external">FaceNiff</a></p>
-<h2 id="Droidsheep"><a href="#Droidsheep" class="headerlink" title="Droidsheep"></a>Droidsheep</h2><p><img src="/imgs/hacker6.png" alt=""><br>Droidsheep是一款相当高效的黑客应用，主要作用是针对Wi-Fi网络执行安全性分析。这款应用能够劫持网络之上的Web会话，而且几乎适用于全部服务及网站。</p>
-<p>在启动Droidsheep应用之后，它会利用一套路由机制对全部Wi-Fi网络流量进行监控与拦截，同时从活动会话当中提取概要信息。在这款应用的帮助下，我们将能够嗅探Facebook、领英、Twitter以及其它各类社交媒体账户。</p>
-<p>DroidSheep Guard，该应用的另一个版本，能够帮助大家在网络之上检测各类ARP嗅探活动——包括由FaceNiff、Droidsheep以及其它软件实施的功能活动。</p>
-<p>下载地址：<a href="http://droidsheep.de/" target="_blank" rel="external">Droidsheep</a></p>
-<h2 id="DroidBox"><a href="#DroidBox" class="headerlink" title="DroidBox"></a>DroidBox</h2><p><img src="/imgs/hacker7.png" alt=""><br>DroidBox是一款对Android应用进行动态分析的应用方案。在该应用的帮助下，大家可以获得极为广泛的分析结果，包括APK软件包、网络流量、短信与手机呼叫、通过不同通道获取泄露信息等等。</p>
-<p>这款出色的Android黑客应用还使得我们能够对Android应用软件包的行为进行可视化处理。</p>
-<p>下载地址：<a href="https://code.google.com/p/droidbox/" target="_blank" rel="external">DroidBox</a></p>
-<h2 id="APKInspector"><a href="#APKInspector" class="headerlink" title="APKInspector"></a>APKInspector</h2><p><img src="/imgs/hacker8.png" alt=""><br>APKInspector应用允许大家执行逆向工程任务。在这款应用的帮助下，我们将获得图形功能与分析能力，从而对监控目标拥有更为深入的理解。 这款强大的Android黑客工具能够帮助大家从任意Android应用当中获取源代码，并将DEX代码进行可视化以清除其中的信用与授权部分。</p>
-<p>下载地址：<a href="https://github.com/honeynet/apkinspector/" target="_blank" rel="external">APKInspector</a></p>
-<h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><p><img src="/imgs/hacker9.png" alt=""><br>Nmap最具人气的网络扫描应用同时适用于Android操作系统。Nmap同时适用于未root与经过root之手机。如果大家身为新手Android黑客，那么这款黑客应用绝对不可或缺。</p>
-<p>下载地址：<a href="https://secwiki.org/w/Nmap/Android" target="_blank" rel="external">Nmap</a></p>
-<h2 id="SSHDroid"><a href="#SSHDroid" class="headerlink" title="SSHDroid"></a>SSHDroid</h2><p><img src="/imgs/hacker10.png" alt=""><br>SSHDroid是一款面向Android系统开发的SSH服务器实现方案，允许大家将自己的Android设备与PC相对接，同时运行 “terminal”与“adb shell”等命令，甚至能够实现文件编辑。当我们与远程设备相连接，它还能够提供额外的安全保护机制。</p>
-<p>这款应用提供了共享密钥验证、WiFi自动启动白名单以及扩展通知控制等功能。</p>
-<p>下载地址：<a href="https://play.google.com/store/apps/details?id=berserker.android.apps.sshdroid&amp;hl=en" target="_blank" rel="external">SSHDroid</a></p>
-<p><strong>文章转自：</strong><a href="http://www.freebuf.com/" target="_blank" rel="external">FreeBuf黑客与极客</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hacker/">hacker</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-git进阶" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/23/git进阶/" class="article-date">
-  	<time datetime="2016-02-23T07:21:52.000Z" itemprop="datePublished">2016-02-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/23/git进阶/">git进阶</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Git是开发中常用的版本管理控制软件，也是Android协同开发中常用的，因此赶快补充点知识吧。<br><img src="/imgs/git进阶.png" alt=""><br><a href="http://iissnan.com/progit/" target="_blank" rel="external">http://iissnan.com/progit/</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
 </div>
       <footer id="footer">
   <div class="outer">
@@ -622,8 +394,8 @@
 		fancybox: true,
 		mathjax: true,
 		animate: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
